@@ -47,5 +47,5 @@ ancestro(X,Y):-parent(X,Z),ancestro(Z,Y).
 descendiente(X,Y):-parent(Y,X).%descendiente Y de X
 descendiente(X,Y):-parent(Z,X),descendiente(Y,Z).
 
-descendientes().
+descendientes()
 

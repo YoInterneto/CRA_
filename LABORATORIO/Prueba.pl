@@ -1,9 +1,9 @@
 % Author:
-% Date: 06/02/2020
+% Date: 08/02/2020
 
 personas([mother, andolini, corleone, carmella, michael, santino, constanzia, frederico, tom,kay,apollonia,lucy,sandra,carlo,deanna,theresa,anthony,mary,vincent,santinojr,francesca,frank,victor,francis,two,frank2,andrew]).
 
-
+%parent(X,Y) -> Y es el padre de X
 parent(corleone,mother).
 parent(corleone,andolini).
 parent(michael,corleone).
@@ -39,13 +39,9 @@ parent(two,theresa).
 parent(frank2,theresa).
 parent(andrew,theresa).
 
+%ancestro(X,Y) -> Y es el ancestro de X
+ancestro(X,Y):-parent(X,Y).%y es ancestro de x si el padre de x es y
+ancestro(X,Y):-parent(Z,Y),ancestro(X,Z).
 
-
-ancestro(X,Y):-parent(X,Y).%ancestro Y de X
-ancestro(X,Y):-parent(X,Z),ancestro(Z,Y).
-
-descendiente(X,Y):-parent(Y,X).%descendiente Y de X
-descendiente(X,Y):-parent(Z,X),descendiente(Y,Z).
-
-descendientes().
-
+%descendientes() -> Y es el descendiente de X
+%descendientes(X,Y):-
