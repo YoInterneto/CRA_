@@ -69,11 +69,23 @@ casados(X,Y):-parent(Hijo,X),parent(Hijo,Y).
 ancestro(X,Y):-parent(X,Y).%y es ancestro de x si el padre de x es y
 ancestro(X,Y):-parent(Z,Y),ancestro(X,Z).
 
-%descendientes(persona, ) -> lista de descendientes
+%descendientes(X,Y) -> Y es el descenciente de X
+
 
 
 %hermano(X,Y) -> Y es el hermano de X
 hermano(X,Y):- parent(X,Padre), parent(Y,Padre),\+ (X=Y).
+%Lista hermanos
+hermanos(Persona,ListaAux,ListaHermanos):-
+   hermano(Persona,Hermano),
+   \+ member(Hermano,ListaAux), ! ,
+      %Nos dice si ya esta en la lista si ya esta hara backtracking
+      %La ! sirve para cortar el backtracing y que solo haya un proceso de backtracking
+   append(ListaAux,[Hermano],ListaAux2),
+   hermanos(Persona,ListaAux2,ListaHermanos).
+   
+hermanos(_,ListaHermanos,ListaHermanos). %Para cuando no hay ningun valor
+
 
 %abuelo(X,Y) -> Y es el abuelo de X
 abuelo(Nieto,Abuelo):-parent(Padre,Abuelo),parent(Nieto,Padre).
