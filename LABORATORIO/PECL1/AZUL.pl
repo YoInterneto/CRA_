@@ -9,11 +9,11 @@ bolsa([
 centroMesa([]).
 
 patron([
-    ['_','','','',''],
-    [],
-    [],
-    [],
-    []
+    ['*','*','*','*','_'],
+    ['*','*','*','_','_'],
+    ['*','*','_','_','_'],
+    ['*','_','_','_','_'],
+    ['_','_','_','_','_']
     ]).
 
 mosaico([
@@ -26,41 +26,13 @@ mosaico([
 
 cementerio([]).
 
+caja([]).
+
 tablero1([]).
 tablero2([]).
 
 tableroJuego([]).
 
-
-
-
-
-
-iniciar(Min,Max,Out):-
-    repeat,
-    write('Introduce el numero de jugadores (2-4): '),
-
-    read(Out),
-    ((Out>=Min,Out=<Max,!);
-        writeln('Dato incorrecto, n jugadores entre 2 y 4.'),false),
-    iniciar_juego(Out,[]).
-
-iniciar_juego(Jugadores,Juego):-
-    write('Tablero inicializado con '),write(Jugadores),write(' jugadores'),
-    %Bolsa,
-    ini_bolsa(Bolsa),
-    ini_factorias_njug(Jugadores,Bolsa,BolsaOut,ListaFactorias),
-    ini_tablero1(Tablero1),
-    ini_tablero2(Tablero2),
-    ini_centroMesa(Centro),
-    ini_patron(Patron),
-    ini_mosaico(Mosaico),
-    ini_cementerio(Cementerio),
-
-    Tablero1 = [BolsaOut,ListaFactorias,Centro],
-    Tablero2 = [Patron,Mosaico,Cementerio],
-
-    Juego=[Tablero1,Tablero2].
 
 ini_bolsa(BolsaOut):-bolsa(Bolsa),random_permutation(Bolsa, BolsaOut).
 
@@ -71,6 +43,8 @@ ini_tablero2(Tablero2):-tablero2(Tablero2).
 ini_centroMesa(Centro):-centroMesa(Centro).
 
 ini_mosaico(Mosaico):-mosaico(Mosaico).
+
+ini_caja(Caja):-caja(Caja).
 
 ini_patron(Patron):-patron(Patron).
 
@@ -95,6 +69,44 @@ ini_factorias(0,BolsaOut,BolsaOut,FactOut,FactOut).
 ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
     NFacts is (NJug * 2) + 1,
     ini_factorias(NFacts,BolsaIn,BolsaOut,[],FactsOut).
+
+
+iniciar(Min,Max,Out):-
+    repeat,
+    write('Introduce el numero de jugadores (2-4): '),
+
+    read(Out),
+    ((Out>=Min,Out=<Max,!);
+        writeln('Dato incorrecto, n jugadores entre 2 y 4.'),false),
+    iniciar_juego(Out,[]).
+
+iniciar_juego(Jugadores,Juego):-
+    write('Tablero inicializado con '),write(Jugadores),write(' jugadores'),
+    %Bolsa,
+    ini_bolsa(Bolsa),
+    ini_factorias_njug(Jugadores,Bolsa,BolsaOut,ListaFactorias),
+    ini_tablero1(Tablero1),
+    ini_tablero2(Tablero2),
+    ini_centroMesa(Centro),
+    ini_patron(Patron),
+    ini_caja(Caja),
+    ini_mosaico(Mosaico),
+    ini_cementerio(Cementerio),
+
+    Tablero1 = [Caja,BolsaOut,ListaFactorias,Centro],
+    Tablero2 = [Patron,Mosaico,Cementerio],
+
+    Juego=[Tablero1,Tablero2].
+
+
+elegir_factoria:-
+
+elegir_color_factoria:-
+
+elegir_patron:-
+
+rellenar_mosaico:-
+
 
 
 
