@@ -96,28 +96,37 @@ iniciar_juego(Jugadores,Juego):-
     Tablero1 = [Caja,BolsaOut,ListaFactorias,Centro],
     Tablero2 = [Patron,Mosaico,Cementerio],
 
-    Juego=[Tablero1,Tablero2].
+    Juego=[Tablero1,Tablero2],
+    empezar_juego(Jugadores,Juego).
+
+empezar_juego(Jugadores,Juego):-
+
+    Juego=[Tablero1,Tablero2],
+    Tablero1=[Caja,Bolsa,Factorias,Centro],
+    Tablero2=[Patron,Mosaico,Juego],
+
+    write('Turno del jugador '), write(Jugadores),
+
+    elegir_factoria(Centro,Factorias,NFactoriaOut).
 
 
-elegir_factoria:-
+elegir_factoria(Centro,Factorias,NFactoriaOut):-
+    
+    length(Factorias, Longitud),
+    imprimir_factorias(Factorias, 0, Longitud),
 
-elegir_color_factoria:-
+    C is Longitud + 1,
+    write(C),write('. '),write(Centro).
 
-elegir_patron:-
+imprimir_factorias(Factorias,NFactoria,Longitud):-
+    NFactoria < Longitud - 1,
+    nth0(NFactoria, Factorias, FactoriaWrite, FactoriasOut),
 
-rellenar_mosaico:-
+    Num is NFactoria + 1,
+    write(Num),write('. '),write(FactoriaWrite),
 
+    imprimir_factorias(Factorias, Num, Lonlgitud).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+pedir_n_factoria(NFactoriaOut):-
+    repeat,
+    read(X).
