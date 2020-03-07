@@ -48,7 +48,6 @@ ini_factoria(BolsaIn,BolsaOut,FactOut):-
     nth0(0, BolsaAux3, Ficha4, BolsaOut),
     FactOut=[Ficha1,Ficha2,Ficha3,Ficha4].
 
-%************************************************************
 ini_factorias(NFact,BolsaIn,BolsaOut,FactAux,FactOut):-
     NFact > 0,
     ini_factoria(BolsaIn,BolsaAux,FactoriaX),
@@ -56,7 +55,6 @@ ini_factorias(NFact,BolsaIn,BolsaOut,FactAux,FactOut):-
     %append(FactAux,FactoriaX,FactAux2),
     NFactOut is (NFact - 1),
     ini_factorias(NFactOut,BolsaAux,BolsaOut,Sublista,FactOut).
-%************************************************************
 
 ini_factorias(0,BolsaOut,BolsaOut,FactOut,FactOut).
 
