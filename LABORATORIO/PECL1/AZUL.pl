@@ -148,7 +148,7 @@ imprimir_factorias(Factorias,NFactoria,Longitud):-
     imprimir_factorias(Factorias, Num, Longitud).
 imprimir_factorias(Factorias,NFactoria,Longitud).
 
-%Pide un número de factoria elegido por el usuario
+%Pide un nï¿½mero de factoria elegido por el usuario
 pedir_n_factoria(Elegida,NFactorias):-
     repeat,
     write('Introduce el numero de factoria: '),
@@ -158,17 +158,18 @@ pedir_n_factoria(Elegida,NFactorias):-
         writeln('ERROR: Color de factoria no valido'),false).
         
 %Con la factoria elegida y el color que queremos nos retorna una lista con las fichas a colocar
-eleccion_color(FactoriaElegida, Contador, Cero, Color):-
-    d
+%eleccion_color(FactoriaElegida, Contador, Cero, Color):-
+%    d
     
 
 eleccion_color(FactoriaElegida, FactoriaElegidaOut, Lista, Color, Index):-
     Index < 3,
     nth0(Index,FactoriaElegida,Posicion),
-    (member(Posicion, FactoriaElegida),
+    (member(Posicion, FactoriaElegida)),
     append(Posicion, Lista, Salida),
     IndexSiguiente is Index + 1,
     eleccion_color(FactoriaElegida, FactoriaElegidaOut, Salida, Color, IndexSigguiente).
+
 eleccion_color(FactoriaElegida, FactoriaElegidaOut, Lista, Color, Index):-
     Index < 3,
     IndexSiguiente is Index + 1,
