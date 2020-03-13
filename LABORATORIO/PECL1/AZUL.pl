@@ -116,8 +116,6 @@ empezar_juego(Jugadores,Juego):-
 
 %Muestra y pide al usuario que diga la factoria/centro que quiere elegir
 %Poner algo asi para hacer un IF??????
-%<NFactorias,!);
-%        writeln('Dato incorrecto, n jugadores entre 2 y 4.'),false).
 elegir_factoria(Centro,Factorias,NFactoriaOut):-
     length(Factorias, Long),
     Longitud is Long + 1,
@@ -132,7 +130,8 @@ elegir_factoria(Centro,Factorias,NFactoriaOut):-
     nth0(Index, Factorias, FactoriaElegida),
     write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida),
     elegir_color(FactoriaElegida, Color),
-    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, 4, Color).
+    length(FactoriaElegida, LongitudFactoria),
+    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color).
 
 %Imprime todas las factorias que hay en el tablero
 imprimir_factorias(Factorias,NFactoria,Longitud):-

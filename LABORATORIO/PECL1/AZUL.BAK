@@ -132,7 +132,8 @@ elegir_factoria(Centro,Factorias,NFactoriaOut):-
     nth0(Index, Factorias, FactoriaElegida),
     write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida),
     elegir_color(FactoriaElegida, Color),
-    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, 4, Color).
+    length(FactoriaElegida, LongitudFactoria),
+    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color).
 
 %Imprime todas las factorias que hay en el tablero
 imprimir_factorias(Factorias,NFactoria,Longitud):-
