@@ -1,4 +1,4 @@
-
+ï»¿
 %Listas para cada uno de los tableros usados en el programa
 bolsa([
     'A','A','A','A','A','A','A','A','A','A',
@@ -131,11 +131,10 @@ elegir_factoria(Centro,Factorias,NFactoriaOut):-
     Index is Elegida - 1,
     nth0(Index, Factorias, FactoriaElegida),
     write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida),
-    %CON FACTORIAELEGIDA TENEMOS LA FACTORIA QUE QUEREMOS PARA OPERAR CON ELLA
-    %elegir_color(FactoriaElegida, FactoriaElegidaOut, Eleccion),
     elegir_color(FactoriaElegida, Color),
-    eleccion_color(FactoriaElegida, FactoriaElegidaOut, [], Color),
-    writeln(FactoriaElegidaOut).
+    eleccion_color(FactoriaElegida, [], FichasCogidasOut, [], FichasSobrantesOut, 4, Color),
+    writeln(FichasCogidasOut),
+    writeln(FichasSobrantesOut).
 
 %Imprime todas las factorias que hay en el tablero
 imprimir_factorias(Factorias,NFactoria,Longitud):-
@@ -148,7 +147,7 @@ imprimir_factorias(Factorias,NFactoria,Longitud):-
     imprimir_factorias(Factorias, Num, Longitud).
 imprimir_factorias(Factorias,NFactoria,Longitud).
 
-%Pide un número de factoria elegido por el usuario
+%Pide un numero de factoria elegido por el usuario
 pedir_n_factoria(Elegida,NFactorias):-
     repeat,
     write('Introduce el numero de factoria: '),
@@ -158,18 +157,19 @@ pedir_n_factoria(Elegida,NFactorias):-
         writeln('ERROR: Color de factoria no valido'),false).
         
 %Con la factoria elegida y el color que queremos nos retorna una lista con las fichas a colocar
-eleccion_color(FactoriaElegida, FactoriaElegidaOut, Lista, Color, Index):-
-    Index < 3,
-    nth0(Index,FactoriaElegida,Posicion),
-    (member(Posicion, FactoriaElegida),
-    append(Posicion, Lista, Salida),
-    IndexSiguiente is Index + 1,
-    eleccion_color(FactoriaElegida, FactoriaElegidaOut, Salida, Color, IndexSigguiente).
-eleccion_color(FactoriaElegida, FactoriaElegidaOut, Lista, Color, Index):-
-    Index < 3,
-    IndexSiguiente is Index + 1,
-    eleccion_color(FactoriaElegida, FactoriaElegidaOut, Lista, Color, IndexSigguiente).
-eleccion_color(FactoriaElegida, Lista, Lista, Color, Index).
+eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
+    Contador > 0,
+    writeln('Si'),
+    ContadorOut is Contador - 1,
+    append(Color, FichasCogidas, FichasCogidas1),
+    eleccion_color(Restantes, FichasCogidas1, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, ContadorOut, Color).
+eleccion_color([Ficha|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
+    Contador > 0,
+    writeln('No'),
+    ContadorOut is Contador - 1,
+    append(Ficha, FichasSobrantes, FichasSobrantes1),
+    eleccion_color(Restantes, FichasCogidas, FichasCodigasOut, FichasSobrantes1, FichasSobrantesOut, ContadorOut, Color).
+eleccion_color([], FichasCodigas, FichasCodigas, FichasSobrantes, FichasSobrantes, 0, Color).
 
 %Sirve para elegir un color de la lista elegida
 elegir_color(FactoriaElegida, Color):-
