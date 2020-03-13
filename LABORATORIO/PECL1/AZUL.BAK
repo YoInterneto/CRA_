@@ -132,9 +132,7 @@ elegir_factoria(Centro,Factorias,NFactoriaOut):-
     nth0(Index, Factorias, FactoriaElegida),
     write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida),
     elegir_color(FactoriaElegida, Color),
-    eleccion_color(FactoriaElegida, [], FichasCogidasOut, [], FichasSobrantesOut, 4, Color),
-    writeln(FichasCogidasOut),
-    writeln(FichasSobrantesOut).
+    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, 4, Color).
 
 %Imprime todas las factorias que hay en el tablero
 imprimir_factorias(Factorias,NFactoria,Longitud):-
@@ -161,13 +159,13 @@ eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrant
     Contador > 0,
     writeln('Si'),
     ContadorOut is Contador - 1,
-    append(Color, FichasCogidas, FichasCogidas1),
+    append([Color], FichasCogidas, FichasCogidas1),
     eleccion_color(Restantes, FichasCogidas1, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, ContadorOut, Color).
 eleccion_color([Ficha|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
     Contador > 0,
     writeln('No'),
     ContadorOut is Contador - 1,
-    append(Ficha, FichasSobrantes, FichasSobrantes1),
+    append([Ficha], FichasSobrantes, FichasSobrantes1),
     eleccion_color(Restantes, FichasCogidas, FichasCodigasOut, FichasSobrantes1, FichasSobrantesOut, ContadorOut, Color).
 eleccion_color([], FichasCodigas, FichasCodigas, FichasSobrantes, FichasSobrantes, 0, Color).
 
