@@ -171,15 +171,12 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
     HuecosLibres > LongitudCogidas,
     LongitudCogidas >0,
     writeln('Sobran huecos'),
-    append(Color, PatronElegido, PatronElegidoAux),
-    writeln(PatronElegidoAux),
+    append([Color], PatronElegido, PatronElegidoAux),
     remove('_', PatronElegidoAux, PatronElegidoAux1),
-    writeln(PatronElegidoAux1),
     LongitudCogidas2 is LongitudCogidas-1,
-    reemplazar_patron(NPatron, LongitudCogidas2, HuecosLibres, PatronElegidoAux, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+    reemplazar_patron(NPatron, LongitudCogidas2, HuecosLibres, PatronElegidoAux1, PatronElegidoOut, Color, Mosaico, MosaicoOut).
 
-reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut):-
-    write(PatronElegido).
+reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut).
 
     
     
