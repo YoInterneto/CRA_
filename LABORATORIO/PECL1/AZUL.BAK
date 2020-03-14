@@ -193,10 +193,8 @@ reemplazar_patron(NPatron, LongitudIntro, Patron):-
 %Posiblmente hacer una regla para cada color
 introducir_mosaico(NElementos, NElementos, Mosaico, MosaicoOut, 'R'):-
    writeln('iguales'),
-   nth1(NElementos, Mosaico, LineaMosaico),
+   nth1(NElementos, Mosaico, LineaMosaico).
    %replace(Factorias, ElegidaIndex, [], FactoriasOut),
-   replace(LineaMosaico, ),
-   
 
 introducir_mosaico(NElementos, NPatron, Mosaico, Mosaico):-
    writeln('no iguales').
@@ -213,7 +211,11 @@ imprimir_factorias(Factorias,NFactoria,Longitud):-
     imprimir_factorias(Factorias, Num, Longitud).
 imprimir_factorias(Factorias,NFactoria,Longitud).
 
+
+
+%************************************************************
 %Pide un numero de factoria elegido por el usuario
+%************************************************************
 pedir_n_factoria(Elegida,NFactorias):-
     repeat,
     write('Introduce el numero de factoria: '),
@@ -222,7 +224,11 @@ pedir_n_factoria(Elegida,NFactorias):-
     ((Elegida>=1,Elegida=<NFactorias,!);
         writeln('ERROR: Color de factoria no valido'),false).
         
-%Con la factoria elegida y el color que queremos nos retorna una lista con las fichas a colocar
+        
+%************************************************************
+%Con la factoria elegida y el color que queremos nos
+%retorna una lista con las fichas a colocar
+%************************************************************
 eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
     Contador > 0,
     writeln('Si'),
@@ -237,7 +243,11 @@ eleccion_color([Ficha|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrant
     eleccion_color(Restantes, FichasCogidas, FichasCodigasOut, FichasSobrantes1, FichasSobrantesOut, ContadorOut, Color).
 eleccion_color([], FichasCodigas, FichasCodigas, FichasSobrantes, FichasSobrantes, 0, Color).
 
+
+
+%************************************************************
 %Sirve para elegir un color de la lista elegida
+%************************************************************
 elegir_color(FactoriaElegida, Color):-
     repeat,
     write('Introduce el color quieres elegir: '),
@@ -245,8 +255,13 @@ elegir_color(FactoriaElegida, Color):-
     read(Color),
     ((member(Color, FactoriaElegida),!);
         writeln('ERROR: Color de factoria no valido'),false).
+
+
         
+%************************************************************
 %Elige la linea que quiere el usuario pero con restricciones
+%************************************************************
+
 %** A **
 elegir_patron(Min,Max,NPatron,Patron,'A'):-
     repeat,
@@ -254,11 +269,12 @@ elegir_patron(Min,Max,NPatron,Patron,'A'):-
 
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
-    (NPatron>=Min,NPatron=<Max,
-    !member('B',PatronElegido),!member('R',PatronElegido),
-    !member('V',PatronElegido),!member('N',PatronElegido),!);
+    (((NPatron>=Min),(NPatron=<Max),
+        \+ member('B',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
-        writeln('       o color incorrecto en linea de patron.'),false).
+        writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** B **
 elegir_patron(Min,Max,NPatron,Patron,'B'):-
     repeat,
@@ -266,11 +282,12 @@ elegir_patron(Min,Max,NPatron,Patron,'B'):-
 
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
-    (NPatron>=Min,NPatron=<Max,
-    !member('A',PatronElegido),!member('R',PatronElegido),
-    !member('V',PatronElegido),!member('N',PatronElegido),!);
+    ((NPatron>=Min,NPatron=<Max,
+        \+ member('A',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
-        writeln('       o color incorrecto en linea de patron.'),false).
+        writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** R **
 elegir_patron(Min,Max,NPatron,Patron,'R'):-
     repeat,
@@ -278,11 +295,12 @@ elegir_patron(Min,Max,NPatron,Patron,'R'):-
 
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
-    (NPatron>=Min,NPatron=<Max,
-    !member('A',PatronElegido),!member('B',PatronElegido),
-    !member('V',PatronElegido),!member('N',PatronElegido),!);
+    ((NPatron>=Min,NPatron=<Max,
+        \+ member('A',PatronElegido),\+ member('B',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
-        writeln('       o color incorrecto en linea de patron.'),false).
+        writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** V **
 elegir_patron(Min,Max,NPatron,Patron,'V'):-
     repeat,
@@ -290,11 +308,12 @@ elegir_patron(Min,Max,NPatron,Patron,'V'):-
 
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
-    (NPatron>=Min,NPatron=<Max,
-    !member('A',PatronElegido),!member('B',PatronElegido),
-    !member('R',PatronElegido),!member('N',PatronElegido),!);
+    ((NPatron>=Min,NPatron=<Max,
+        \+ member('A',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('B',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
-        writeln('       o color incorrecto en linea de patron.'),false).
+        writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** N **
 elegir_patron(Min,Max,NPatron,Patron,'N'):-
     repeat,
@@ -302,19 +321,30 @@ elegir_patron(Min,Max,NPatron,Patron,'N'):-
 
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
-    (NPatron>=Min,NPatron=<Max,
-    !member('A',PatronElegido),!member('B',PatronElegido),
-    !member('V',PatronElegido),!member('R',PatronElegido),!);
+    ((NPatron>=Min,NPatron=<Max,
+        \+ member('A',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('B',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
-        writeln('       o color incorrecto en linea de patron.'),false).
+        writeln('       o color incorrecto para la linea de patron.'),false).
+
+
         
+%************************************************************
+%Reemplaza el elemento en la posicion index por otro elemento
+%************************************************************
+
 replace_index([_|T], 0, X, [X|T]).
 replace_index([H|T], I, X, [H|R]):-
     I > -1,
     NI is I-1,
-    replace(T, NI, X, R), !.
+    replace_index(T, NI, X, R), !.
 replace_index(L, _, _, L).
 
+
+
+%************************************************************
+%Cuenta las apariciones de un elemento en una lista
+%************************************************************
 count(_, [], 0).
 count(X, [X | T], N) :-
     !, count(X, T, N1),

@@ -9,7 +9,7 @@ bolsa([
 patron([
     ['_'],
     ['_','_'],
-    ['B','_','_'],
+    ['_','_','_'],
     ['_','_','_','_'],
     ['_','_','_','_','_']
     ]).
@@ -145,27 +145,48 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
     nth0(Index, Factorias, FactoriaElegida),
     write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida).
     
-introducir_patron(Patron, PatronOut, FichasIntro, Color, Mosaico, MosaicoOut):-
+introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):-
 
     imprimir_patron(Patron),
     elegir_patron(1, 5, NPatron, Patron, Color),
     
     nth1(NPatron, Patron, PatronElegido),
     
-    writeln(FichasIntro),
+    length(FichasCogidas, LongitudCogidas),
+    write(LongitudCogidas),
+    writeln(NPatron),
     
-    length(FichasIntro, LongitudIntro),
-    write(LongitudIntro),writeln(NPatron),
-    
-    %Si NELementos es 0, es decir, no hay fichas de tu color en el patron elegido y ademas
-    %NVacios es menor que NPatron quiere decir que hay fichas de otro color en el patron
-    %y por tanto no puedes meterlas
     count(Color, PatronElegido, NElementos),
     count('_', PatronElegido, NVacios),
     
     writeln(NElementos).
-    %reemplazar_patron(NPatron, LongitudIntro, Patron, Color).
+    %Son los huecos dentro de la linea del patron donde podemos meter fichas
+    HuecosLibres is NPatron - NElementos,
     
+    reemplazar_patron(FichasCogidas, 1, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+    
+reemplazar_patron(NPatron, M, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
+    %Cuando hay mas huecos que fichas vas a meter
+    HuecosLibres > LongitudCogidas,
+    writeln('Sobran huecos'),
+    between(M, LongitudCogidas, X),
+    append(Color, PatronElegido, PatronElegidoAux),
+    remove('_', PatronElegidoAux, PatronElegidoAux1),
+    X >= LongitudCogidas, ().
+    reemplazar_patron(NPatron, M, X, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
+    
+    
+
+    
+
+reemplazar_patron(NPatron, LongitudIntro, Patron):-
+    NPatron = LongitudIntro,
+    writeln('Van al mosaico').
+
+reemplazar_patron(NPatron, LongitudIntro, Patron):-
+    writeln('No van al mosaico'),
+    introducir_mosaico(NElementos, NPatron).
+
 imprimir_patron(Patron):-
     Patron = [Patron1, Patron2, Patron3, Patron4, Patron5],
     write('1. '), writeln(Patron1),
@@ -173,18 +194,6 @@ imprimir_patron(Patron):-
     write('3. '), writeln(Patron3),
     write('4. '), writeln(Patron4),
     write('5. '), writeln(Patron5).
-    
-reemplazar_patron(NPatron, LongitudIntro, [Color|Res], Color):-
-    NPatron < LongitudIntro,
-    writeln("Caen a la caja").
-    
-reemplazar_patron(NPatron, LongitudIntro, Patron):-
-    NPatron = LongitudIntro,
-    writeln('Van al mosaico').
-    
-reemplazar_patron(NPatron, LongitudIntro, Patron):-
-    writeln('No van al mosaico'),
-    introducir_mosaico(NElementos, NPatron).
     
 
 %Esta funcion lo que hace es unificar la longitud de la linea patron con el numero de fichas de un color
@@ -211,7 +220,11 @@ imprimir_factorias(Factorias,NFactoria,Longitud):-
     imprimir_factorias(Factorias, Num, Longitud).
 imprimir_factorias(Factorias,NFactoria,Longitud).
 
+
+
+%************************************************************
 %Pide un numero de factoria elegido por el usuario
+%************************************************************
 pedir_n_factoria(Elegida,NFactorias):-
     repeat,
     write('Introduce el numero de factoria: '),
@@ -220,7 +233,11 @@ pedir_n_factoria(Elegida,NFactorias):-
     ((Elegida>=1,Elegida=<NFactorias,!);
         writeln('ERROR: Color de factoria no valido'),false).
         
-%Con la factoria elegida y el color que queremos nos retorna una lista con las fichas a colocar
+        
+%************************************************************
+%Con la factoria elegida y el color que queremos nos
+%retorna una lista con las fichas a colocar
+%************************************************************
 eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
     Contador > 0,
     writeln('Si'),
@@ -235,7 +252,11 @@ eleccion_color([Ficha|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrant
     eleccion_color(Restantes, FichasCogidas, FichasCodigasOut, FichasSobrantes1, FichasSobrantesOut, ContadorOut, Color).
 eleccion_color([], FichasCodigas, FichasCodigas, FichasSobrantes, FichasSobrantes, 0, Color).
 
+
+
+%************************************************************
 %Sirve para elegir un color de la lista elegida
+%************************************************************
 elegir_color(FactoriaElegida, Color):-
     repeat,
     write('Introduce el color quieres elegir: '),
@@ -243,9 +264,13 @@ elegir_color(FactoriaElegida, Color):-
     read(Color),
     ((member(Color, FactoriaElegida),!);
         writeln('ERROR: Color de factoria no valido'),false).
-        
 
+
+        
+%************************************************************
 %Elige la linea que quiere el usuario pero con restricciones
+%************************************************************
+
 %** A **
 elegir_patron(Min,Max,NPatron,Patron,'A'):-
     repeat,
@@ -258,6 +283,7 @@ elegir_patron(Min,Max,NPatron,Patron,'A'):-
         \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
         writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** B **
 elegir_patron(Min,Max,NPatron,Patron,'B'):-
     repeat,
@@ -270,6 +296,7 @@ elegir_patron(Min,Max,NPatron,Patron,'B'):-
         \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
         writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** R **
 elegir_patron(Min,Max,NPatron,Patron,'R'):-
     repeat,
@@ -282,6 +309,7 @@ elegir_patron(Min,Max,NPatron,Patron,'R'):-
         \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
         writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** V **
 elegir_patron(Min,Max,NPatron,Patron,'V'):-
     repeat,
@@ -294,6 +322,7 @@ elegir_patron(Min,Max,NPatron,Patron,'V'):-
         \+ member('B',PatronElegido),\+ member('N',PatronElegido),!);
         writeln('ERROR: numero de patron entre 1 y 5.'),
         writeln('       o color incorrecto para la linea de patron.'),false).
+        
 %** N **
 elegir_patron(Min,Max,NPatron,Patron,'N'):-
     repeat,
@@ -307,6 +336,12 @@ elegir_patron(Min,Max,NPatron,Patron,'N'):-
         writeln('ERROR: numero de patron entre 1 y 5.'),
         writeln('       o color incorrecto para la linea de patron.'),false).
 
+
+        
+%************************************************************
+%Reemplaza el elemento en la posicion index por otro elemento
+%************************************************************
+
 replace_index([_|T], 0, X, [X|T]).
 replace_index([H|T], I, X, [H|R]):-
     I > -1,
@@ -314,9 +349,35 @@ replace_index([H|T], I, X, [H|R]):-
     replace_index(T, NI, X, R), !.
 replace_index(L, _, _, L).
 
+
+
+%************************************************************
+%Cuenta las apariciones de un elemento en una lista
+%************************************************************
 count(_, [], 0).
 count(X, [X | T], N) :-
     !, count(X, T, N1),
     N is N1 + 1.
 count(X, [_ | T], N) :-
     count(X, T, N).
+
+    
+    
+%************************************************************
+%Reemplaza las posiciones que tienen por otro
+%  X-Elemento reemplazado, Y-Elemento que reemplaza
+%************************************************************
+replace(,,[],[]).
+replace(X,Y,[X|T],[Y|S]):-
+    !,replace(X,Y,T,S).
+replace(X,Y,[Z|T],[Z|S]):-
+    replace(X,Y,T,S).
+    
+    
+%************************************************************
+%Borra la primera aparicion del elemento en la lista
+%************************************************************
+remove(X, [X|Xs], Xs).
+remove(X, [Y|Ys], [Y|Zs]):-
+    remove(X, Ys, Zs).
+    
