@@ -148,7 +148,7 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
 introducir_patron(Patron, PatronOut, FichasIntro, Color, Mosaico, MosaicoOut):-
 
     imprimir_patron(Patron),
-    elegir_patron(1, 5, NPatron),
+    elegir_patron(1, 5, NPatron, Patron, Color),
     
     nth1(NPatron, Patron, PatronElegido),
     
@@ -246,14 +246,58 @@ elegir_color(FactoriaElegida, Color):-
     ((member(Color, FactoriaElegida),!);
         writeln('ERROR: Color de factoria no valido'),false).
         
-elegir_patron(Min,Max,NPatron):-
+%Elige la linea que quiere el usuario pero con restricciones
+%** A **
+elegir_patron(Min,Max,NPatron,Patron,'A'):-
     repeat,
     write('Introduce el numero de patron (1-5): '),
 
     read(NPatron),
-    ((NPatron>=Min,NPatron=<Max,!);
+    nth1(NPatron, Patron, PatronElegido),
+    ((NPatron>=Min,NPatron=<Max,
         writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
-        
+%** B **
+elegir_patron(Min,Max,NPatron,Patron,'B'):-
+    repeat,
+    write('Introduce el numero de patron (1-5): '),
+
+    read(NPatron),
+    nth1(NPatron, Patron, PatronElegido),
+    ((NPatron>=Min,NPatron=<Max,
+    !member('A',PatronElegido),!member('R',PatronElegido),
+    !member('V',PatronElegido),!member('N',PatronElegido)!);
+        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+%** R **
+elegir_patron(Min,Max,NPatron,Patron,'R'):-
+    repeat,
+    write('Introduce el numero de patron (1-5): '),
+
+    read(NPatron),
+    nth1(NPatron, Patron, PatronElegido),
+    ((NPatron>=Min,NPatron=<Max,
+    !member('A'),!member('B'),!member('V'),!member('N')!);
+        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+%** V **
+elegir_patron(Min,Max,NPatron,Patron,'V'):-
+    repeat,
+    write('Introduce el numero de patron (1-5): '),
+
+    read(NPatron),
+    nth1(NPatron, Patron, PatronElegido),
+    ((NPatron>=Min,NPatron=<Max,
+    !member('A'),!member('B'),!member('R'),!member('N')!);
+        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+%** N **
+elegir_patron(Min,Max,NPatron,Patron,'N'):-
+    repeat,
+    write('Introduce el numero de patron (1-5): '),
+
+    read(NPatron),
+    nth1(NPatron, Patron, PatronElegido),
+    ((NPatron>=Min,NPatron=<Max,
+    !member('A'),!member('B'),!member('V'),!member('R')!);
+        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+
 replace_index([_|T], 0, X, [X|T]).
 replace_index([H|T], I, X, [H|R]):-
     I > -1,
