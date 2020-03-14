@@ -9,7 +9,7 @@ bolsa([
 patron([
     ['_'],
     ['_','_'],
-    ['_','_','_'],
+    ['B','_','_'],
     ['_','_','_','_'],
     ['_','_','_','_','_']
     ]).
@@ -193,10 +193,8 @@ reemplazar_patron(NPatron, LongitudIntro, Patron):-
 %Posiblmente hacer una regla para cada color
 introducir_mosaico(NElementos, NElementos, Mosaico, MosaicoOut, 'R'):-
    writeln('iguales'),
-   nth1(NElementos, Mosaico, LineaMosaico),
+   nth1(NElementos, Mosaico, LineaMosaico).
    %replace(Factorias, ElegidaIndex, [], FactoriasOut),
-   replace(LineaMosaico, ),
-   
 
 introducir_mosaico(NElementos, NPatron, Mosaico, Mosaico):-
    writeln('no iguales').
@@ -246,6 +244,7 @@ elegir_color(FactoriaElegida, Color):-
     ((member(Color, FactoriaElegida),!);
         writeln('ERROR: Color de factoria no valido'),false).
         
+
 %Elige la linea que quiere el usuario pero con restricciones
 %** A **
 elegir_patron(Min,Max,NPatron,Patron,'A'):-
@@ -254,8 +253,11 @@ elegir_patron(Min,Max,NPatron,Patron,'A'):-
 
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
-    ((NPatron>=Min,NPatron=<Max,
-        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+    (((NPatron>=Min),(NPatron=<Max),
+        \+ member('B',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
+        writeln('ERROR: numero de patron entre 1 y 5.'),
+        writeln('       o color incorrecto para la linea de patron.'),false).
 %** B **
 elegir_patron(Min,Max,NPatron,Patron,'B'):-
     repeat,
@@ -264,9 +266,10 @@ elegir_patron(Min,Max,NPatron,Patron,'B'):-
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
     ((NPatron>=Min,NPatron=<Max,
-    !member('A',PatronElegido),!member('R',PatronElegido),
-    !member('V',PatronElegido),!member('N',PatronElegido)!);
-        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+        \+ member('A',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
+        writeln('ERROR: numero de patron entre 1 y 5.'),
+        writeln('       o color incorrecto para la linea de patron.'),false).
 %** R **
 elegir_patron(Min,Max,NPatron,Patron,'R'):-
     repeat,
@@ -275,8 +278,10 @@ elegir_patron(Min,Max,NPatron,Patron,'R'):-
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
     ((NPatron>=Min,NPatron=<Max,
-    !member('A'),!member('B'),!member('V'),!member('N')!);
-        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+        \+ member('A',PatronElegido),\+ member('B',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('N',PatronElegido),!);
+        writeln('ERROR: numero de patron entre 1 y 5.'),
+        writeln('       o color incorrecto para la linea de patron.'),false).
 %** V **
 elegir_patron(Min,Max,NPatron,Patron,'V'):-
     repeat,
@@ -285,8 +290,10 @@ elegir_patron(Min,Max,NPatron,Patron,'V'):-
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
     ((NPatron>=Min,NPatron=<Max,
-    !member('A'),!member('B'),!member('R'),!member('N')!);
-        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+        \+ member('A',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('B',PatronElegido),\+ member('N',PatronElegido),!);
+        writeln('ERROR: numero de patron entre 1 y 5.'),
+        writeln('       o color incorrecto para la linea de patron.'),false).
 %** N **
 elegir_patron(Min,Max,NPatron,Patron,'N'):-
     repeat,
@@ -295,14 +302,16 @@ elegir_patron(Min,Max,NPatron,Patron,'N'):-
     read(NPatron),
     nth1(NPatron, Patron, PatronElegido),
     ((NPatron>=Min,NPatron=<Max,
-    !member('A'),!member('B'),!member('V'),!member('R')!);
-        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+        \+ member('A',PatronElegido),\+ member('R',PatronElegido),
+        \+ member('V',PatronElegido),\+ member('B',PatronElegido),!);
+        writeln('ERROR: numero de patron entre 1 y 5.'),
+        writeln('       o color incorrecto para la linea de patron.'),false).
 
 replace_index([_|T], 0, X, [X|T]).
 replace_index([H|T], I, X, [H|R]):-
     I > -1,
     NI is I-1,
-    replace(T, NI, X, R), !.
+    replace_index(T, NI, X, R), !.
 replace_index(L, _, _, L).
 
 count(_, [], 0).
