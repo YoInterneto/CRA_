@@ -145,27 +145,48 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
     nth0(Index, Factorias, FactoriaElegida),
     write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida).
     
-introducir_patron(Patron, PatronOut, FichasIntro, Color, Mosaico, MosaicoOut):-
+introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):-
 
     imprimir_patron(Patron),
     elegir_patron(1, 5, NPatron, Patron, Color),
     
     nth1(NPatron, Patron, PatronElegido),
     
-    writeln(FichasIntro),
+    length(FichasCogidas, LongitudCogidas),
+    write(LongitudCogidas),
+    writeln(NPatron),
     
-    length(FichasIntro, LongitudIntro),
-    write(LongitudIntro),writeln(NPatron),
-    
-    %Si NELementos es 0, es decir, no hay fichas de tu color en el patron elegido y ademas
-    %NVacios es menor que NPatron quiere decir que hay fichas de otro color en el patron
-    %y por tanto no puedes meterlas
     count(Color, PatronElegido, NElementos),
     count('_', PatronElegido, NVacios),
     
-    writeln(NElementos).
-    %reemplazar_patron(NPatron, LongitudIntro, Patron, Color).
+    writeln(NElementos),
+    %Son los huecos dentro de la linea del patron donde podemos meter fichas
+    HuecosLibres is NPatron - NElementos,
     
+    reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
+    writeln(PatronElegidoOut).
+    
+reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
+    %Cuando hay mas huecos que fichas vas a meter
+    %HuecosLibres > LongitudCogidas,
+    %LongitudCogidas >0,
+    %writeln('Sobran huecos'),
+    append(Color, PatronElegido, PatronElegidoAux),
+    writeln(PatronElegidoAux).
+    %remove('_', PatronElegidoAux, PatronElegidoAux1),
+    %writeln(PatronElegidoAux1),
+    %LongitudCogidas2 is LongitudCogidas-1,
+    %reemplazar_patron(NPatron, LongitudCogidas2, HuecosLibres, PatronElegidoAux, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+
+%reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut):-
+ %  write(PatronElegido).
+
+    
+    
+
+    
+
+
 imprimir_patron(Patron):-
     Patron = [Patron1, Patron2, Patron3, Patron4, Patron5],
     write('1. '), writeln(Patron1),
@@ -173,18 +194,6 @@ imprimir_patron(Patron):-
     write('3. '), writeln(Patron3),
     write('4. '), writeln(Patron4),
     write('5. '), writeln(Patron5).
-    
-reemplazar_patron(NPatron, LongitudIntro, [Color|Res], Color):-
-    NPatron < LongitudIntro,
-    writeln("Caen a la caja").
-    
-reemplazar_patron(NPatron, LongitudIntro, Patron):-
-    NPatron = LongitudIntro,
-    writeln('Van al mosaico').
-    
-reemplazar_patron(NPatron, LongitudIntro, Patron):-
-    writeln('No van al mosaico'),
-    introducir_mosaico(NElementos, NPatron).
     
 
 %Esta funcion lo que hace es unificar la longitud de la linea patron con el numero de fichas de un color
@@ -351,3 +360,24 @@ count(X, [X | T], N) :-
     N is N1 + 1.
 count(X, [_ | T], N) :-
     count(X, T, N).
+
+    
+    
+%************************************************************
+%Reemplaza las posiciones que tienen por otro
+%  X-Elemento reemplazado, Y-Elemento que reemplaza
+%************************************************************
+replace(,,[],[]).
+replace(X,Y,[X|T],[Y|S]):-
+    !,replace(X,Y,T,S).
+replace(X,Y,[Z|T],[Z|S]):-
+    replace(X,Y,T,S).
+    
+    
+%************************************************************
+%Borra la primera aparicion del elemento en la lista
+%************************************************************
+remove(X, [X|Xs], Xs).
+remove(X, [Y|Ys], [Y|Zs]):-
+    remove(X, Ys, Zs).
+    

@@ -159,33 +159,33 @@ introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):
     count(Color, PatronElegido, NElementos),
     count('_', PatronElegido, NVacios),
     
-    writeln(NElementos).
+    writeln(NElementos),
     %Son los huecos dentro de la linea del patron donde podemos meter fichas
     HuecosLibres is NPatron - NElementos,
     
-    reemplazar_patron(FichasCogidas, 1, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+    reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
+    writeln(PatronElegidoOut).
     
-reemplazar_patron(NPatron, M, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
+reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
     %Cuando hay mas huecos que fichas vas a meter
-    HuecosLibres > LongitudCogidas,
-    writeln('Sobran huecos'),
-    between(M, LongitudCogidas, X),
+    %HuecosLibres > LongitudCogidas,
+    %LongitudCogidas >0,
+    %writeln('Sobran huecos'),
     append(Color, PatronElegido, PatronElegidoAux),
-    remove('_', PatronElegidoAux, PatronElegidoAux1),
-    X >= LongitudCogidas, ().
-    reemplazar_patron(NPatron, M, X, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
+    writeln(PatronElegidoAux).
+    %remove('_', PatronElegidoAux, PatronElegidoAux1),
+    %writeln(PatronElegidoAux1),
+    %LongitudCogidas2 is LongitudCogidas-1,
+    %reemplazar_patron(NPatron, LongitudCogidas2, HuecosLibres, PatronElegidoAux, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+
+%reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut):-
+ %  write(PatronElegido).
+
     
     
 
     
 
-reemplazar_patron(NPatron, LongitudIntro, Patron):-
-    NPatron = LongitudIntro,
-    writeln('Van al mosaico').
-
-reemplazar_patron(NPatron, LongitudIntro, Patron):-
-    writeln('No van al mosaico'),
-    introducir_mosaico(NElementos, NPatron).
 
 imprimir_patron(Patron):-
     Patron = [Patron1, Patron2, Patron3, Patron4, Patron5],
