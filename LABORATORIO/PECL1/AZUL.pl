@@ -7,10 +7,10 @@ bolsa([
     'R','R','R','R','R','R','R','R','R','R',
     'N','N','N','N','N','N','N','N','N','N']).
 patron([
-    ['*','*','*','*','_'],
-    ['*','*','*','_','_'],
-    ['*','*','_','_','_'],
-    ['*','_','_','_','_'],
+    ['_'],
+    ['_','_'],
+    ['_','_','_'],
+    ['_','_','_','_'],
     ['_','_','_','_','_']
     ]).
 mosaico([
@@ -111,12 +111,27 @@ empezar_juego(Jugadores,Juego):-
     Tablero2=[Patron,Mosaico,Cementerio],
 
     write('Turno del jugador '), writeln(Jugadores),
+    writeln(Factorias),
 
-    elegir_factoria(Centro,Factorias,NFactoriaOut).
-
+    elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida),
+    elegir_color(FactoriaElegida, Color),
+    length(FactoriaElegida, LongitudFactoria),
+    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color),
+    
+    ElegidaIndex is Elegida - 1,
+    replace_index(Factorias, ElegidaIndex, [], FactoriasOut),
+    
+    %regla para comprobar si todas las factorias son vacias y si son vacias que las llene ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
+    %********
+    
+    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut).
+    
+    
+    
 %Muestra y pide al usuario que diga la factoria/centro que quiere elegir
 %Poner algo asi para hacer un IF??????
-elegir_factoria(Centro,Factorias,NFactoriaOut):-
+elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
+
     length(Factorias, Long),
     Longitud is Long + 1,
     
@@ -128,10 +143,64 @@ elegir_factoria(Centro,Factorias,NFactoriaOut):-
     pedir_n_factoria(Elegida,Longitud),
     Index is Elegida - 1,
     nth0(Index, Factorias, FactoriaElegida),
-    write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida),
-    elegir_color(FactoriaElegida, Color),
-    length(FactoriaElegida, LongitudFactoria),
-    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color).
+    write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida).
+    
+introducir_patron(Patron, PatronOut, FichasIntro, Color, Mosaico, MosaicoOut):-
+
+    imprimir_patron(Patron),
+    elegir_patron(1, 5, NPatron),
+    
+    nth1(NPatron, Patron, PatronElegido),
+    
+    writeln(FichasIntro),
+    
+    length(FichasIntro, LongitudIntro),
+    write(LongitudIntro),writeln(NPatron),
+    
+    %Si NELementos es 0, es decir, no hay fichas de tu color en el patron elegido y ademas
+    %NVacios es menor que NPatron quiere decir que hay fichas de otro color en el patron
+    %y por tanto no puedes meterlas
+    count(Color, PatronElegido, NElementos),
+    count('_', PatronElegido, NVacios),
+    
+    writeln(NElementos).
+    %reemplazar_patron(NPatron, LongitudIntro, Patron, Color).
+    
+imprimir_patron(Patron):-
+    Patron = [Patron1, Patron2, Patron3, Patron4, Patron5],
+    write('1. '), writeln(Patron1),
+    write('2. '), writeln(Patron2),
+    write('3. '), writeln(Patron3),
+    write('4. '), writeln(Patron4),
+    write('5. '), writeln(Patron5).
+    
+reemplazar_patron(NPatron, LongitudIntro, [Color|Res], Color):-
+    NPatron < LongitudIntro,
+    writeln("Caen a la caja").
+    
+reemplazar_patron(NPatron, LongitudIntro, Patron):-
+    NPatron = LongitudIntro,
+    writeln('Van al mosaico').
+    
+reemplazar_patron(NPatron, LongitudIntro, Patron):-
+    writeln('No van al mosaico'),
+    introducir_mosaico(NElementos, NPatron).
+    
+
+%Esta funcion lo que hace es unificar la longitud de la linea patron con el numero de fichas de un color
+%que hay en un mosaico, si son iguales introducira en la linea NPatron del mosaico la ficha del color, si no
+%no hace nada
+%Posiblmente hacer una regla para cada color
+introducir_mosaico(NElementos, NElementos, Mosaico, MosaicoOut, 'R'):-
+   writeln('iguales'),
+   nth1(NElementos, Mosaico, LineaMosaico),
+   %replace(Factorias, ElegidaIndex, [], FactoriasOut),
+   replace(LineaMosaico, ),
+   
+
+introducir_mosaico(NElementos, NPatron, Mosaico, Mosaico):-
+   writeln('no iguales').
+    
 
 %Imprime todas las factorias que hay en el tablero
 imprimir_factorias(Factorias,NFactoria,Longitud):-
@@ -177,3 +246,24 @@ elegir_color(FactoriaElegida, Color):-
     ((member(Color, FactoriaElegida),!);
         writeln('ERROR: Color de factoria no valido'),false).
         
+elegir_patron(Min,Max,NPatron):-
+    repeat,
+    write('Introduce el numero de patron (1-5): '),
+
+    read(NPatron),
+    ((NPatron>=Min,NPatron=<Max,!);
+        writeln('Dato incorrecto, numero de patron entre 1 y 5.'),false).
+        
+replace_index([_|T], 0, X, [X|T]).
+replace_index([H|T], I, X, [H|R]):-
+    I > -1,
+    NI is I-1,
+    replace(T, NI, X, R), !.
+replace_index(L, _, _, L).
+
+count(_, [], 0).
+count(X, [X | T], N) :-
+    !, count(X, T, N1),
+    N is N1 + 1.
+count(X, [_ | T], N) :-
+    count(X, T, N).
