@@ -101,22 +101,27 @@ iniciar_juego(Jugadores):-
     Tablero2 = [Patron,Mosaico,Cementerio],
     Juego = [Tablero1,Tablero2],
 
-    empezar_juego(Jugadores,Juego).
+    empezar_juego(Jugadores, Juego, Jugadores).
 
 
-empezar_juego(Jugadores,Juego):-
+empezar_juego(Jugadores, Juego, Contador):-
+
+    Contador > 0,
 
     Juego=[Tablero1,Tablero2],
     Tablero1=[Caja,Bolsa,Factorias,Centro],
     Tablero2=[Patron,Mosaico,Cementerio],
 
-    write('Turno del jugador '), writeln(Jugadores),
+    write('Turno del jugador '), writeln(Contador),
+    ContadorOut is Contador - 1,
+    
     writeln(Factorias),
 
     elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida),
     elegir_color(FactoriaElegida, Color),
     length(FactoriaElegida, LongitudFactoria),
     eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color),
+
     
     ElegidaIndex is Elegida - 1,
     replace_index(Factorias, ElegidaIndex, [], FactoriasOut),
@@ -124,7 +129,19 @@ empezar_juego(Jugadores,Juego):-
     %regla para comprobar si todas las factorias son vacias y si son vacias que las llene ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
     %********
     
-    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut).
+    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut),
+    imprimir_patron(PatronOut),
+    writeln(' '),
+    imprimir_mosaico(MosaicoOut),
+    append(FichasSobrantesOut,Centro,CentroOut),
+    
+    %FALTA VER QUE HACEMOS CON LA BOLSA
+    Tablero1Out = [Caja, Bolsa, FactoriasOut, CentroOut],
+    Tablero2Out = [PatronOut, MosaicoOut, Cementerio],
+    JuegoOut = [Tablero1Out, Tablero2Out],
+
+    empezar_juego(Jugadores, JuegoOut, ContadorOut).
+empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
     
     
     
@@ -140,32 +157,29 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
     C is Longitud + 1,
     write(Longitud),write('C. '),writeln(Centro),
 
-    pedir_n_factoria(Elegida,Longitud),
+    pedir_n_factoria(Elegida,Longitud, Factorias),
     Index is Elegida - 1,
     nth0(Index, Factorias, FactoriaElegida),
-    write('Elegida factoria '),write(Index),write(' '),writeln(FactoriaElegida).
+    write('Elegida factoria '),write(Elegida),write(' '),writeln(FactoriaElegida).
     
 introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):-
 
     imprimir_patron(Patron),
+    
     elegir_patron(1, 5, NPatron, Patron, Color),
     
     nth1(NPatron, Patron, PatronElegido),
     
     length(FichasCogidas, LongitudCogidas),
-    write(LongitudCogidas),
-    writeln(NPatron),
     
     count(Color, PatronElegido, NElementos),
-    count('_', PatronElegido, NVacios),
     
-    writeln(NElementos),
     %Son los huecos dentro de la linea del patron donde podemos meter fichas
     HuecosLibres is NPatron - NElementos,
     
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
-    writeln(PatronElegidoOut),
-    writeln(MosaicoOut).
+    PatronIndex is NPatron - 1,
+    replace_index(Patron, PatronIndex, PatronElegidoOut, PatronOut).
     
 reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
     %Cuando hay mas huecos que fichas vas a meter
@@ -176,7 +190,6 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
     remove('_', PatronElegidoAux, PatronElegidoAux1),
     LongitudCogidas2 is LongitudCogidas-1,
     reemplazar_patron(NPatron, LongitudCogidas2, HuecosLibres, PatronElegidoAux1, PatronElegidoOut, Color, Mosaico, MosaicoOut).
-
 reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut).
 
 reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
@@ -186,9 +199,9 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
     remove('_', PatronElegidoAux, PatronElegidoAux1),
     HuecosLibres2 is HuecosLibres-1,
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres2, PatronElegidoAux1, PatronElegidoOut, Color, Mosaico, MosaicoOut).
-
-reemplazar_patron(NPatron,LongitudCogidas, 0, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut):-
-    introducir_mosaico(NPatron, Mosaico, MosaicoOut, Color).
+reemplazar_patron(NPatron,LongitudCogidas, 0, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
+    introducir_mosaico(NPatron, Mosaico, MosaicoOut, Color),
+    replace(Color, '_', PatronElegido, PatronElegidoOut).
 
 
 
@@ -207,36 +220,40 @@ imprimir_patron(Patron):-
     write('5. '), writeln(Patron5).
     
 
+imprimir_mosaico(Mosaico):-
+    Mosaico = [Mosaico1, Mosaico2, Mosaico3, Mosaico4, Mosaico5],
+    writeln(Mosaico1),
+    writeln(Mosaico2),
+    writeln(Mosaico3),
+    writeln(Mosaico4),
+    writeln(Mosaico5).
+    
+
 %Esta funcion lo que hace es unificar la longitud de la linea patron con el numero de fichas de un color
 %que hay en un mosaico, si son iguales introducira en la linea NPatron del mosaico la ficha del color, si no
 %no hace nada
 %Posiblmente hacer una regla para cada color
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'R'):-
-    writeln('iguales'),
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('r','R',LineaMosaico,LineaMosaicoOut),
     replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
 
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'A'):-
-    writeln('iguales'),
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('a','A',LineaMosaico,LineaMosaicoOut),
     replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
     
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'B'):-
-    writeln('iguales'),
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('b','B',LineaMosaico,LineaMosaicoOut),
     replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
     
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'V'):-
-    writeln('iguales'),
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('v','V',LineaMosaico,LineaMosaicoOut),
     replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
     
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'N'):-
-    writeln('iguales'),
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('n','N',LineaMosaico,LineaMosaicoOut),
     replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
@@ -265,12 +282,15 @@ imprimir_factorias(Factorias,NFactoria,Longitud).
 %************************************************************
 %Pide un numero de factoria elegido por el usuario
 %************************************************************
-pedir_n_factoria(Elegida,NFactorias):-
+pedir_n_factoria(Elegida, NFactorias, Factorias):-
     repeat,
     write('Introduce el numero de factoria: '),
 
     read(Elegida),
-    ((Elegida>=1,Elegida=<NFactorias,!);
+    nth1(Elegida, Factorias, FactElegida),
+    length(FactElegida, Longitud),
+    NFactoriasOut is NFactorias + 2,
+    ((Elegida>=1,Elegida=<NFactoriasOut,Longitud>=1,!);
         writeln('ERROR: Color de factoria no valido'),false).
         
         
@@ -280,16 +300,16 @@ pedir_n_factoria(Elegida,NFactorias):-
 %************************************************************
 eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
     Contador > 0,
-    writeln('Si'),
     ContadorOut is Contador - 1,
     append([Color], FichasCogidas, FichasCogidas1),
     eleccion_color(Restantes, FichasCogidas1, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, ContadorOut, Color).
+    
 eleccion_color([Ficha|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
     Contador > 0,
-    writeln('No'),
     ContadorOut is Contador - 1,
     append([Ficha], FichasSobrantes, FichasSobrantes1),
     eleccion_color(Restantes, FichasCogidas, FichasCodigasOut, FichasSobrantes1, FichasSobrantesOut, ContadorOut, Color).
+    
 eleccion_color([], FichasCodigas, FichasCodigas, FichasSobrantes, FichasSobrantes, 0, Color).
 
 
