@@ -28,7 +28,7 @@ tablero2([]).
 tableroJuego([]).
 
 
-%Inicializacion de las listas que usaran en el programa
+%Inicialización de las listas que usarán en el programa
 ini_bolsa(BolsaOut):-bolsa(Bolsa),random_permutation(Bolsa, BolsaOut).
 
 
@@ -126,7 +126,7 @@ empezar_juego(Jugadores, Juego, Contador):-
     ElegidaIndex is Elegida - 1,
     replace_index(Factorias, ElegidaIndex, [], FactoriasOut),
     
-    %regla para comprobar si todas las factorias son vacias y si son vacias que las llene ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
+    %Regla para comprobar si todas las factorias son vacías y si son vacías que las llene ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
     %********
     
     introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut),
@@ -174,7 +174,7 @@ introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):
     
     count(Color, PatronElegido, NElementos),
     
-    %Son los huecos dentro de la linea del patron donde podemos meter fichas
+    %Son los huecos dentro de la línea del patrón donde podemos meter fichas
     HuecosLibres is NPatron - NElementos,
     
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
@@ -210,7 +210,7 @@ reemplazar_patron(NPatron,LongitudCogidas, 0, PatronElegido, PatronElegidoOut, C
 
     
 
-
+%Imprime el patrón de juego
 imprimir_patron(Patron):-
     Patron = [Patron1, Patron2, Patron3, Patron4, Patron5],
     write('1. '), writeln(Patron1),
@@ -219,7 +219,7 @@ imprimir_patron(Patron):-
     write('4. '), writeln(Patron4),
     write('5. '), writeln(Patron5).
     
-
+%Imprime el mosaico de juego
 imprimir_mosaico(Mosaico):-
     Mosaico = [Mosaico1, Mosaico2, Mosaico3, Mosaico4, Mosaico5],
     writeln(Mosaico1),
@@ -229,10 +229,10 @@ imprimir_mosaico(Mosaico):-
     writeln(Mosaico5).
     
 
-%Esta funcion lo que hace es unificar la longitud de la linea patron con el numero de fichas de un color
-%que hay en un mosaico, si son iguales introducira en la linea NPatron del mosaico la ficha del color, si no
+%Esta función lo que hace es unificar la longitud de la línea patrón con el número de fichas de un color
+%que hay en un mosaico, si son iguales introducira en la línea NPatron del mosaico la ficha del color, si no
 %no hace nada
-%Posiblmente hacer una regla para cada color
+%Posiblemente hacer una regla para cada color
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'R'):-
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('r','R',LineaMosaico,LineaMosaicoOut),
@@ -266,7 +266,7 @@ introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'N'):-
  %  writeln('no iguales').
     
 
-%Imprime todas las factorias que hay en el tablero
+%Imprime todas las factorías que hay en el tablero
 imprimir_factorias(Factorias,NFactoria,Longitud):-
     NFactoria < Longitud,
     nth0(NFactoria, Factorias, FactoriaWrite, FactoriasOut),
@@ -280,7 +280,7 @@ imprimir_factorias(Factorias,NFactoria,Longitud).
 
 
 %************************************************************
-%Pide un numero de factoria elegido por el usuario
+%Pide un número de factoria elegido por el usuario
 %************************************************************
 pedir_n_factoria(Elegida, NFactorias, Factorias):-
     repeat,
@@ -295,7 +295,7 @@ pedir_n_factoria(Elegida, NFactorias, Factorias):-
         
         
 %************************************************************
-%Con la factoria elegida y el color que queremos nos
+%Con la factoría elegida y el color que queremos nos
 %retorna una lista con las fichas a colocar
 %************************************************************
 eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
@@ -328,7 +328,7 @@ elegir_color(FactoriaElegida, Color):-
 
         
 %************************************************************
-%Elige la linea que quiere el usuario pero con restricciones
+%Elige la línea que quiere el usuario pero con restricciones
 %************************************************************
 
 %** A **
@@ -399,7 +399,7 @@ elegir_patron(Min,Max,NPatron,Patron,'N'):-
 
         
 %************************************************************
-%Reemplaza el elemento en la posicion index por otro elemento
+%Reemplaza el elemento en la posición index por otro elemento
 %************************************************************
 
 replace_index([_|T], 0, X, [X|T]).
@@ -435,7 +435,7 @@ replace(X, Y, [H|T], [H|T2]):-
     
     
 %************************************************************
-%Borra la primera aparicion del elemento en la lista
+%Borra la primera aparición del elemento en la lista
 %************************************************************
 remove(X, [X|Xs], Xs).
 remove(X, [Y|Ys], [Y|Zs]):-
