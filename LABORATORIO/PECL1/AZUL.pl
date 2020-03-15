@@ -117,6 +117,7 @@ empezar_juego(Jugadores,Juego):-
     elegir_color(FactoriaElegida, Color),
     length(FactoriaElegida, LongitudFactoria),
     eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color),
+    append([FichasSobrantesOut],Centro,CentroOut),
     
     ElegidaIndex is Elegida - 1,
     replace_index(Factorias, ElegidaIndex, [], FactoriasOut),
@@ -164,7 +165,8 @@ introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):
     HuecosLibres is NPatron - NElementos,
     
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
-    writeln(PatronElegidoOut).
+    writeln(PatronElegidoOut),
+    writeln(MosaicoOut).
     
 reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
     %Cuando hay mas huecos que fichas vas a meter
@@ -177,6 +179,19 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
     reemplazar_patron(NPatron, LongitudCogidas2, HuecosLibres, PatronElegidoAux1, PatronElegidoOut, Color, Mosaico, MosaicoOut).
 
 reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut).
+
+reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
+    %Cuando hay igual o mas fichas que huecos
+    HuecosLibres > 0,
+    append([Color], PatronElegido, PatronElegidoAux),
+    remove('_', PatronElegidoAux, PatronElegidoAux1),
+    HuecosLibres2 is HuecosLibres-1,
+    reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres2, PatronElegidoAux1, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+
+reemplazar_patron(NPatron,LongitudCogidas, 0, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut):-
+    introducir_mosaico(NPatron, Mosaico, MosaicoOut, Color).
+
+
 
     
     
@@ -197,13 +212,42 @@ imprimir_patron(Patron):-
 %que hay en un mosaico, si son iguales introducira en la linea NPatron del mosaico la ficha del color, si no
 %no hace nada
 %Posiblmente hacer una regla para cada color
-introducir_mosaico(NElementos, NElementos, Mosaico, MosaicoOut, 'R'):-
-   writeln('iguales'),
-   nth1(NElementos, Mosaico, LineaMosaico).
-   %replace(Factorias, ElegidaIndex, [], FactoriasOut),
+introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'R'):-
+    writeln('iguales'),
+    nth1(NPatron, Mosaico, LineaMosaico),
+    replace('r','R',LineaMosaico,LineaMosaicoOut),
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
 
-introducir_mosaico(NElementos, NPatron, Mosaico, Mosaico):-
-   writeln('no iguales').
+introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'A'):-
+    writeln('iguales'),
+    nth1(NPatron, Mosaico, LineaMosaico),
+    replace('a','A',LineaMosaico,LineaMosaicoOut),
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    
+introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'B'):-
+    writeln('iguales'),
+    nth1(NPatron, Mosaico, LineaMosaico),
+    replace('b','B',LineaMosaico,LineaMosaicoOut),
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    
+introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'V'):-
+    writeln('iguales'),
+    nth1(NPatron, Mosaico, LineaMosaico),
+    replace('v','V',LineaMosaico,LineaMosaicoOut),
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    
+introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'N'):-
+    writeln('iguales'),
+    nth1(NPatron, Mosaico, LineaMosaico),
+    replace('n','N',LineaMosaico,LineaMosaicoOut),
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+
+   
+
+
+
+%introducir_mosaico(NPatron, Mosaico, MosaicoOut,'R'):-
+ %  writeln('no iguales').
     
 
 %Imprime todas las factorias que hay en el tablero
@@ -241,12 +285,14 @@ eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrant
     ContadorOut is Contador - 1,
     append([Color], FichasCogidas, FichasCogidas1),
     eleccion_color(Restantes, FichasCogidas1, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, ContadorOut, Color).
+    
 eleccion_color([Ficha|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
     Contador > 0,
     writeln('No'),
     ContadorOut is Contador - 1,
     append([Ficha], FichasSobrantes, FichasSobrantes1),
     eleccion_color(Restantes, FichasCogidas, FichasCodigasOut, FichasSobrantes1, FichasSobrantesOut, ContadorOut, Color).
+    
 eleccion_color([], FichasCodigas, FichasCodigas, FichasSobrantes, FichasSobrantes, 0, Color).
 
 
@@ -364,11 +410,11 @@ count(X, [_ | T], N) :-
 %Reemplaza las posiciones que tienen por otro
 %  X-Elemento reemplazado, Y-Elemento que reemplaza
 %************************************************************
-replace(,,[],[]).
-replace(X,Y,[X|T],[Y|S]):-
-    !,replace(X,Y,T,S).
-replace(X,Y,[Z|T],[Z|S]):-
-    replace(X,Y,T,S).
+replace(_, _, [], []).
+replace(X, Y, [X|T], [Y|T2]):-
+    replace(X, Y, T, T2).
+replace(X, Y, [H|T], [H|T2]):-
+    H \= X, replace(X, Y, T, T2).
     
     
 %************************************************************
@@ -377,4 +423,9 @@ replace(X,Y,[Z|T],[Z|S]):-
 remove(X, [X|Xs], Xs).
 remove(X, [Y|Ys], [Y|Zs]):-
     remove(X, Ys, Zs).
+    
+replace(_, _, [], []).
+replace(O, R, [O|T], [R|T2]) :- replace(O, R, T, T2).
+replace(O, R, [H|T], [H|T2]) :- H \= O, replace(O, R, T, T2).
+
     
