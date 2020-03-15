@@ -96,17 +96,22 @@ iniciar_juego(Jugadores):-
     ini_caja(Caja),
     ini_mosaico(Mosaico),
     ini_cementerio(Cementerio),
-    
-    Tablero1 = [Caja,BolsaOut,ListaFactorias,Centro],
+
+    append(ListaFactorias,[Centro],ListaFactoriasOut),%La ultima casilla es el centro
+    writeln(ListaFactoriasOut),
+    Tablero1 = [Caja,BolsaOut,ListaFactoriasOut,Centro],
     Tablero2 = [Patron,Mosaico,Cementerio],
     Juego = [Tablero1,Tablero2],
 
     empezar_juego(Jugadores, Juego, Jugadores).
 
 
+
+    
 empezar_juego(Jugadores, Juego, Contador):-
 
     Contador > 0,
+
 
     Juego=[Tablero1,Tablero2],
     Tablero1=[Caja,Bolsa,Factorias,Centro],
@@ -114,17 +119,21 @@ empezar_juego(Jugadores, Juego, Contador):-
 
     write('Turno del jugador '), writeln(Contador),
     ContadorOut is Contador - 1,
-    
-    writeln(Factorias),
+    %append(Factorias,[Centro],FactoriasCentro),
+    %writeln(FactoriasCentro),
+    NJug is  (Jugadores * 2) + 1,
+    replace_index(Factorias,NJug,Centro,FactoriasCentro),
 
-    elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida),
+    elegir_factoria(Centro, CentroOut, FactoriasCentro, FactoriaElegida, Elegida),
+    Elegida =< NJug,
     elegir_color(FactoriaElegida, Color),
     length(FactoriaElegida, LongitudFactoria),
     eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color),
 
-    
+
+    write('Elegida '), writeln(Elegida),
     ElegidaIndex is Elegida - 1,
-    replace_index(Factorias, ElegidaIndex, [], FactoriasOut),
+    replace_index(FactoriasCentro, ElegidaIndex, [], FactoriasOut),
     
     %regla para comprobar si todas las factorias son vacias y si son vacias que las llene ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
     %********
@@ -132,16 +141,81 @@ empezar_juego(Jugadores, Juego, Contador):-
     introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut),
     imprimir_patron(PatronOut),
     writeln(' '),
-    imprimir_mosaico(MosaicoOut),
+    writeln(MosaicoOut),
     append(FichasSobrantesOut,Centro,CentroOut),
+    %append(FactoriasOut,CentroOut,FactoriasCentro),
+    %writeln(CentroOut),
+    %writeln(FactoriasCentro),
+    %remove(Centro,FactoriasOut,FactoriasCentroOut),
+    %FALTA VER QUE HACEMOS CON LA BOLSA
+    Tablero1Out = [Caja, Bolsa, FactoriasOut, CentroOut],
+    Tablero2Out = [PatronOut, MosaicoOut, Cementerio],
+    JuegoOut = [Tablero1Out, Tablero2Out],
+
+    hacer_centro(Jugadores, JuegoOut, ContadorOut),
+    empezar_juego(Jugadores, JuegoOut, ContadorOut).
+
+%Para cuando se elija el centro, habria que eliminar las cogidas y no meter las sobrantes. Por que no entra???????????
+%empezar_juego(Jugadores, Juego, Contador):-
+
+
+    %writeln('tus muelas').
+
     
+empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
+
+%Falta hacer un else de estooooooooooo
+hacer_centro(Jugadores, Juego, Contador):-
+    writeln('entro'),
+    Contador > 0,
+
+
+    Juego=[Tablero1,Tablero2],
+    Tablero1=[Caja,Bolsa,Factorias,Centro],
+    Tablero2=[Patron,Mosaico,Cementerio],
+
+    write('Turno del jugador '), writeln(Contador),
+    ContadorOut is Contador - 1,
+    %append(Factorias,[Centro],FactoriasCentro),
+    %writeln(FactoriasCentro),
+    NJug is  (Jugadores * 2) + 1,
+    replace_index(Factorias,NJug,Centro,FactoriasCentro),
+
+    elegir_factoria(Centro, CentroOut, FactoriasCentro, FactoriaElegida, Elegida),
+    Elegida > NJug,
+    elegir_color(FactoriaElegida, Color),
+    length(FactoriaElegida, LongitudFactoria),
+    eleccion_color(FactoriaElegida, FichasCogidas, FichasCogidasOut, FichasSobrantes, FichasSobrantesOut, LongitudFactoria, Color),
+
+
+    write('Elegida '), writeln(Elegida),
+    ElegidaIndex is Elegida - 1,
+    replace_index(FactoriasCentro, ElegidaIndex, [], FactoriasOut),
+
+    %regla para comprobar si todas las factorias son vacias y si son vacias que las llene ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
+    %********
+
+    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut),
+    imprimir_patron(PatronOut),
+    writeln(' '),
+    writeln(MosaicoOut),
+    %append(FichasSobrantesOut,Centro,CentroOut),
+    %append(FactoriasOut,CentroOut,FactoriasCentro),
+    %writeln(CentroOut),
+    %writeln(FactoriasCentro),
+    %remove(Centro,FactoriasOut,FactoriasCentroOut),
+    removeAll(Color,Centro,CentroOut),
     %FALTA VER QUE HACEMOS CON LA BOLSA
     Tablero1Out = [Caja, Bolsa, FactoriasOut, CentroOut],
     Tablero2Out = [PatronOut, MosaicoOut, Cementerio],
     JuegoOut = [Tablero1Out, Tablero2Out],
 
     empezar_juego(Jugadores, JuegoOut, ContadorOut).
-empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
+
+hacer_centro(Jugadores, Juego, 0):- hacer_centro(Jugadores, Juego, Jugadores).
+    
+    
+
     
     
     
@@ -153,9 +227,9 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
     Longitud is Long + 1,
     
     imprimir_factorias(Factorias, 0, Longitud),
-    
+
     C is Longitud + 1,
-    write(Longitud),write('C. '),writeln(Centro),
+    %write(Longitud),write('C. '),writeln(Centro),
 
     pedir_n_factoria(Elegida,Longitud, Factorias),
     Index is Elegida - 1,
@@ -179,7 +253,8 @@ introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):
     
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
     PatronIndex is NPatron - 1,
-    replace_index(Patron, PatronIndex, PatronElegidoOut, PatronOut).
+    replace_index(Patron, PatronIndex, PatronElegidoOut, PatronOut),
+    writeln(MosaicoOut).
     
 reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
     %Cuando hay mas huecos que fichas vas a meter
@@ -190,6 +265,7 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
     remove('_', PatronElegidoAux, PatronElegidoAux1),
     LongitudCogidas2 is LongitudCogidas-1,
     reemplazar_patron(NPatron, LongitudCogidas2, HuecosLibres, PatronElegidoAux1, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+    
 reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut).
 
 reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
@@ -199,6 +275,7 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
     remove('_', PatronElegidoAux, PatronElegidoAux1),
     HuecosLibres2 is HuecosLibres-1,
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres2, PatronElegidoAux1, PatronElegidoOut, Color, Mosaico, MosaicoOut).
+    
 reemplazar_patron(NPatron,LongitudCogidas, 0, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut):-
     introducir_mosaico(NPatron, Mosaico, MosaicoOut, Color),
     replace(Color, '_', PatronElegido, PatronElegidoOut).
@@ -236,27 +313,32 @@ imprimir_mosaico(Mosaico):-
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'R'):-
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('r','R',LineaMosaico,LineaMosaicoOut),
-    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut),
+    writeln(MosaicoOut).
 
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'A'):-
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('a','A',LineaMosaico,LineaMosaicoOut),
-    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut),
+    writeln(MosaicoOut).
     
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'B'):-
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('b','B',LineaMosaico,LineaMosaicoOut),
-    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut),
+    writeln(MosaicoOut).
     
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'V'):-
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('v','V',LineaMosaico,LineaMosaicoOut),
-    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut),
+    writeln(MosaicoOut).
     
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'N'):-
     nth1(NPatron, Mosaico, LineaMosaico),
     replace('n','N',LineaMosaico,LineaMosaicoOut),
-    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut).
+    replace(LineaMosaico,LineaMosaicoOut,Mosaico,MosaicoOut),
+    writeln(MosaicoOut).
 
    
 
@@ -440,6 +522,13 @@ replace(X, Y, [H|T], [H|T2]):-
 remove(X, [X|Xs], Xs).
 remove(X, [Y|Ys], [Y|Zs]):-
     remove(X, Ys, Zs).
+
+
+%Borra todos de la lista
+removeAll(_, [], []).
+removeAll(X, [X|T], L):- removeAll(X, T, L), !.
+removeAll(X, [H|T], [H|L]):- removeAll(X, T, L ).
+
     
 replace(_, _, [], []).
 replace(O, R, [O|T], [R|T2]) :- replace(O, R, T, T2).
