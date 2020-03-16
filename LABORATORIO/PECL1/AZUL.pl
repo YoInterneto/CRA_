@@ -74,7 +74,7 @@ ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
 
 
 %Logica del programa
-jugarAzul1():-
+jugarAzul():-
     iniciar(2,4,Jugadores).
 
 
@@ -143,7 +143,8 @@ empezar_juego(Jugadores, Juego, Contador):-
     FactLong1 is FactLong - 1,
 
     longitud_total(FactoriasOut, FactLong1, Suma, LongTotalOut),
-    llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut),
+    writeln('*************************'),writeln(LongTotalOut),writeln('*************************'),
+    llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores),
 
     Tablero1Out = [Caja, BolsaOut, FactoriasOutOut, CentroOut],
     Tablero2Out = [PatronOut, MosaicoOut, Cementerio],
@@ -153,10 +154,10 @@ empezar_juego(Jugadores, Juego, Contador):-
 empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
 
 llenar_bolsa(0, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores):-
-write('RELLENA'),
+    write('RELLENA').
     ini_factorias_njug(Jugadores,Bolsa,BolsaOut,ListaFactorias),
     append(ListaFactorias,[Centro],FactoriasOutOut).
-llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOut, Bolsa, Bolsa).
+llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOut, Bolsa, Bolsa, Jugadores).
 
 %Elegida y NJug+1 son iguales, entonces es el centro
 reemplazar_fichas(X,X,FichasSobrantesOut, Centro, CentroOut):-
