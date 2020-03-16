@@ -1,8 +1,6 @@
-﻿% Author:
-% Date: 16/03/2020
-
-
-%Listas para cada uno de los tableros usados en el programa
+﻿%************************************************************
+%Pide un número de factoria elegido por el usuario
+%************************************************************
 bolsa([
     'A','A','A','A','A','A','A','A','A','A',
     'B','B','B','B','B','B','B','B','B','B',
@@ -31,33 +29,23 @@ tablero2([]).
 tableroJuego([]).
 
 
-%Inicialización de las listas que usarán en el programa
-ini_bolsa(BolsaOut):-bolsa(Bolsa),random_permutation(Bolsa, BolsaOut).
-
-
+%************************************************************
+%Inicialización de las estructuras de datos
+%************************************************************
+ini_bolsa(BolsaOut):-
+    bolsa(Bolsa),
+    random_permutation(Bolsa, BolsaOut).
 ini_centroMesa(Centro):-centroMesa(Centro).
-
-
 ini_mosaico(Mosaico):-mosaico(Mosaico).
-
-
 ini_caja(Caja):-caja(Caja).
-
-
 ini_patron(Patron):-patron(Patron).
-
-
 ini_cementerio(Cementerio):-cementerio(Cementerio).
-
-
 ini_factoria(BolsaIn,BolsaOut,FactOut):-
     nth0(0, BolsaIn, Ficha1, BolsaAux1),
     nth0(0, BolsaAux1, Ficha2, BolsaAux2),
     nth0(0, BolsaAux2, Ficha3, BolsaAux3),
     nth0(0, BolsaAux3, Ficha4, BolsaOut),
     FactOut=[Ficha1,Ficha2,Ficha3,Ficha4].
-
-
 ini_factorias(NFact,BolsaIn,BolsaOut,FactAux,FactOut):-
     NFact > 0,
     ini_factoria(BolsaIn,BolsaAux,FactoriaX),
@@ -65,19 +53,23 @@ ini_factorias(NFact,BolsaIn,BolsaOut,FactAux,FactOut):-
     NFactOut is (NFact - 1),
     ini_factorias(NFactOut,BolsaAux,BolsaOut,Sublista,FactOut).
 ini_factorias(0,BolsaOut,BolsaOut,FactOut,FactOut).
-
-
 ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
     NFacts is (NJug * 2) + 1,
     ini_factorias(NFacts,BolsaIn,BolsaOut,[],FactsOut).
 
 
 
-%Logica del programa
+
+%************************************************************
+%Comienzo del programa
+%************************************************************
 jugarAzul():-
-    iniciar(1,4).
+    iniciar(2,4).
 
 
+%************************************************************
+%Pide el número de jugadores del programa
+%************************************************************
 iniciar(Min,Max):-
     repeat,
     write('Introduce el numero de jugadores (2-4): '),
@@ -89,6 +81,10 @@ iniciar(Min,Max):-
     iniciar_juego(Jugadores).
 
 
+%************************************************************
+%Llama a las funciones para inicializar las estructuras de
+%datos
+%************************************************************
 iniciar_juego(Jugadores):-
     write('Tablero inicializado con '),write(Jugadores),writeln(' jugadores'),
 
@@ -109,6 +105,10 @@ iniciar_juego(Jugadores):-
     empezar_juego(Jugadores, Juego, Jugadores).
 
 
+%************************************************************
+%Donde se encuentran la mayoria de llamadas a funciones del
+%programa, y donde se controlan los turnos de los jutgadores
+%************************************************************
 empezar_juego(Jugadores, Juego, Contador):-
 
     Contador > 0,
@@ -152,21 +152,30 @@ empezar_juego(Jugadores, Juego, Contador):-
     empezar_juego(Jugadores, JuegoOut, ContadorOut).
 empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
 
+
+%************************************************************
+%Llena las factorias cuando se han vaciado
+%************************************************************
 llenar_bolsa(0, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores):-
     ini_factorias_njug(Jugadores,Bolsa,BolsaOut,ListaFactorias),
     append(ListaFactorias,[[]],FactoriasOutOut).
 llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOut, Bolsa, Bolsa, Jugadores).
 
-%Elegida y NJug+1 son iguales, entonces es el centro
+
+
+%************************************************************
+%Mete las fichas sobrantes en el centro (si es sobrantes de
+%una factoria) o no las mete (sobrantes de centro)
+%************************************************************o
 reemplazar_fichas(X,X,FichasSobrantesOut, Centro, CentroOut):-
     append([],FichasSobrantesOut, CentroOut).
-
-%Elegida y NJug+1 son diferentes, entonces es una factoria
 reemplazar_fichas(X,Y,FichasSobrantesOut, Centro, CentroOut):-
     append(Centro, FichasSobrantesOut, CentroOut).
 
 
-%Muestra y pide al usuario que diga la factoria/centro que quiere elegir
+%************************************************************
+%Pide un número de factoria elegido por el usuario
+%************************************************************
 elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
 
     length(Factorias, Long),
@@ -181,6 +190,10 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
     nth0(Index, Factorias, FactoriaElegida),
     write('Elegida factoria '),write(Elegida),write(' '),writeln(FactoriaElegida).
 
+
+%************************************************************
+%Pide el número de patron
+%************************************************************
 introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):-
 
     imprimir_patron(Patron),
@@ -473,7 +486,5 @@ removeAll(X, [X|T], L):- removeAll(X, T, L), !.
 removeAll(X, [H|T], [H|L]):- removeAll(X, T, L ).
 
 
-replace(_, _, [], []).
-replace(O, R, [O|T], [R|T2]) :- replace(O, R, T, T2).
-replace(O, R, [H|T], [H|T2]) :- H \= O, replace(O, R, T, T2).
+
 
