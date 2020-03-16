@@ -75,10 +75,10 @@ ini_factorias_njug(NJug,BolsaIn,BolsaOut,FactsOut):-
 
 %Logica del programa
 jugarAzul():-
-    iniciar(2,4,Jugadores).
+    iniciar(1,4).
 
 
-iniciar(Min,Max,Jugadores):-
+iniciar(Min,Max):-
     repeat,
     write('Introduce el numero de jugadores (2-4): '),
 
@@ -143,7 +143,6 @@ empezar_juego(Jugadores, Juego, Contador):-
     FactLong1 is FactLong - 1,
 
     longitud_total(FactoriasOut, FactLong1, Suma, LongTotalOut),
-    writeln('*************************'),writeln(LongTotalOut),writeln('*************************'),
     llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores),
 
     Tablero1Out = [Caja, BolsaOut, FactoriasOutOut, CentroOut],
@@ -154,9 +153,8 @@ empezar_juego(Jugadores, Juego, Contador):-
 empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
 
 llenar_bolsa(0, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores):-
-    write('RELLENA').
     ini_factorias_njug(Jugadores,Bolsa,BolsaOut,ListaFactorias),
-    append(ListaFactorias,[Centro],FactoriasOutOut).
+    append(ListaFactorias,[[]],FactoriasOutOut).
 llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOut, Bolsa, Bolsa, Jugadores).
 
 %Elegida y NJug+1 son iguales, entonces es el centro
