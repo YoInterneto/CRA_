@@ -192,7 +192,8 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
 
 
 %************************************************************
-%Pide el número de patron
+%Pide el número de patron y mete las fichas elegidas por el
+%en el patron
 %************************************************************
 introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):-
 
