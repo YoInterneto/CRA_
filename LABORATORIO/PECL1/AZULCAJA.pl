@@ -1,12 +1,15 @@
-ï»¿%************************************************************
-%Estructuras de datos del programa
+% Author:
+% Date: 16/03/2020
+
+%************************************************************
+%Pide un número de factoria elegido por el usuario
 %************************************************************
 bolsa([
-    'A','A','A','A','A','A','A','A','A','A',
-    'B','B','B','B','B','B','B','B','B','B',
-    'V','V','V','V','V','V','V','V','V','V',
-    'R','R','R','R','R','R','R','R','R','R',
-    'N','N','N','N','N','N','N','N','N','N']).
+    'A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A',
+    'B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','B',
+    'V','V','V','V','V','V','V','V','V','V','V','V','V','V','V','V','V','V','V','V',
+    'R','R','R','R','R','R','R','R','R','R','R','R','R','R','R','R','R','R','R','R',
+    'N','N','N','N','N','N','N','N','N','N','N','N','N','N','N','N','N','N','N','N']).
 patron([
     ['_'],
     ['_','_'],
@@ -30,7 +33,7 @@ tableroJuego([]).
 
 
 %************************************************************
-%InicializaciÃ³n de las estructuras de datos
+%Inicialización de las estructuras de datos
 %************************************************************
 ini_bolsa(BolsaOut):-
     bolsa(Bolsa),
@@ -68,7 +71,7 @@ jugarAzul():-
 
 
 %************************************************************
-%Pide el nÃºmero de jugadores del programa
+%Pide el número de jugadores del programa
 %************************************************************
 iniciar(Min,Max):-
     repeat,
@@ -114,9 +117,11 @@ empezar_juego(Jugadores, Juego, Contador):-
     Contador > 0,
 
     Juego=[Tablero1,Tablero2],
-    Tablero1=[Caja,Bolsa,Factorias,Centro],
+    Tablero1=[CajaIn,Bolsa,Factorias,Centro],
     Tablero2=[Patron,Mosaico,Cementerio],
 
+    writeln(Caja),
+    writeln('************************'),
     write('Turno del jugador '), writeln(Contador),
     ContadorOut is Contador - 1,
     NJug is  (Jugadores * 2) + 1,
@@ -134,7 +139,7 @@ empezar_juego(Jugadores, Juego, Contador):-
 
     reemplazar_fichas(ElegidaIndex, NJug, FichasSobrantesOut, Centro, CentroOut),
 
-    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut,Caja),
+    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut, Caja, CajaOut),
 
     imprimir_patron(PatronOut),
 
@@ -143,24 +148,37 @@ empezar_juego(Jugadores, Juego, Contador):-
     FactLong1 is FactLong - 1,
 
     longitud_total(FactoriasOut, FactLong1, Suma, LongTotalOut),
-    writeln('*********************'),writeln(LongTotalOut),writeln('*********************'),
-    llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores),
+    length(Bolsa, BolsaLong),
+    llenar_bolsa(BolsaLong, CajaOut, CajaOutOut, Bolsa, BolsaOut),
+    llenar_facts(LongTotalOut, FactoriasOut, FactoriasOutOut, BolsaOut, BolsaOutOut, Jugadores),
 
-    Tablero1Out = [CajaOut, BolsaOut, FactoriasOutOut, CentroOut],
+    Tablero1Out = [CajaOutOut, BolsaOutOut, FactoriasOutOut, CentroOut],
     Tablero2Out = [PatronOut, MosaicoOut, Cementerio],
     JuegoOut = [Tablero1Out, Tablero2Out],
+    
+    writeln('************************'),
+    writeln(CajaOut),
+    halt.
 
-    empezar_juego(Jugadores, JuegoOut, ContadorOut).
+    %empezar_juego(Jugadores, JuegoOut, ContadorOut).
 empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
+
+
+%************************************************************
+%Llena la bolsa con las fichas de la caja
+%************************************************************
+llenar_bolsa(Long, Caja, CajaOut, Bolsa, BolsaOut):-
+    append(Bolsa, Caja, BolsaOut),
+    CajaOut = [].
 
 
 %************************************************************
 %Llena las factorias cuando se han vaciado
 %************************************************************
-llenar_bolsa(0, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores):-
+llenar_facts(0, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores):-
     ini_factorias_njug(Jugadores,Bolsa,BolsaOut,ListaFactorias),
     append(ListaFactorias,[[]],FactoriasOutOut).
-llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOut, Bolsa, Bolsa, Jugadores).
+llenar_facts(LongTotalOut, FactoriasOut, FactoriasOut, Bolsa, Bolsa, Jugadores).
 
 
 
@@ -175,7 +193,7 @@ reemplazar_fichas(X,Y,FichasSobrantesOut, Centro, CentroOut):-
 
 
 %************************************************************
-%Pide un nÃºmero de factoria elegido por el usuario
+%Pide un número de factoria elegido por el usuario
 %************************************************************
 elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
 
@@ -193,10 +211,10 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
 
 
 %************************************************************
-%Pide el nÃºmero de patron y mete las fichas elegidas por el
+%Pide el número de patron y mete las fichas elegidas por el
 %en el patron
 %************************************************************
-introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut,Caja):-
+introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut,Caja, CajaOut):-
 
     imprimir_patron(Patron),
 
@@ -210,14 +228,12 @@ introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut,C
 
     count(Color, PatronElegido, NElementos),
 
-    %Son los huecos dentro de la lÃ­nea del patrÃ³n donde podemos meter fichas
+    %Son los huecos dentro de la línea del patrón donde podemos meter fichas
     HuecosLibres is NPatron - NElementos,
 
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
     count(Color, PatronElegidoOut, Lleno),
     comprobar_linea(NPatron,Lleno,PatronElegidoOut,PatronElegidoOut1,Mosaico,MosaicoOut,Color,Caja,CajaOut),
-    
-    writeln(CajaOut),
     PatronIndex is NPatron - 1,
     replace_index(Patron, PatronIndex, PatronElegidoOut1, PatronOut).
 
@@ -235,26 +251,19 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
 reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut).
 
 
-comprobar_linea(NPatron, NPatron, PatronElegido, PatronElegidoOut, Mosaico, MosaicoOut,Color,Caja,CajaOut):-
+comprobar_linea(NPatron, NPatron, PatronElegido, PatronElegidoOut, Mosaico, MosaicoOut, Color, Caja, CajaOut):-
     introducir_mosaico(NPatron, Mosaico, MosaicoOut, Color),
     replace(Color, '_', PatronElegido, PatronElegidoOut),
-    introducir_caja(NPatron,Caja,CajaOut,Color),
-    writeln(CajaOut).
-comprobar_linea(NPatron, Lleno, PatronElegido, PatronElegido, Mosaico, Mosaico, Color,Caja,CajaOut).
+    meter_caja(NPatron, Caja, CajaOut, Color).
+comprobar_linea(NPatron, Lleno, PatronElegido, PatronElegido, Mosaico, Mosaico, Color, Caja, CajaOut).
 
 
-%Mete en la caja el numero de veces que el NPatron hasta 1 (NPatron-1 veces)
-introducir_caja(NPatron,Caja,CajaOut,Color):-
-     write(NPatron),
-     writeln(Color),
-     NPatron > 1,
-     append(Caja,[Color],Caja1),
-     write('Caja: '),
-     writeln(Caja1), %Lo muestra bien pero no se guarda
-     NPatron2 is NPatron - 1,
-     introducir_caja(NPatron2,Caja1,CajaOut2,Color).
-     
-introducir_caja(1,Caja,Caja,Color).
+meter_caja(Fichas, Caja, CajaOut, Color):-
+    Fichas > 1,
+    append([Color], Caja, CajaAux),
+    FichasAux is Fichas - 1,
+    meter_caja(FichasAux, CajaAux, CajaOut, Color).
+meter_caja(1, Caja, Caja, Color).
 
 
 longitud_total(Factorias, LongFactorias, LongTotal, LongTotalOut):-
@@ -268,7 +277,7 @@ longitud_total(Factorias, 0, LongTotal, LongTotal).
 
 
 
-%Imprime el patrÃ³n de juego
+%Imprime el patrón de juego
 imprimir_patron(Patron):-
     Patron = [Patron1, Patron2, Patron3, Patron4, Patron5],
     write('1. '), writeln(Patron1),
@@ -288,8 +297,8 @@ imprimir_mosaico(Mosaico):-
     writeln(Mosaico5).
 
 
-%Esta funciÃ³n lo que hace es unificar la longitud de la lÃ­nea patrÃ³n con el nÃºmero de fichas de un color
-%que hay en un mosaico, si son iguales introducira en la lÃ­nea NPatron del mosaico la ficha del color, si no
+%Esta función lo que hace es unificar la longitud de la línea patrón con el número de fichas de un color
+%que hay en un mosaico, si son iguales introducira en la línea NPatron del mosaico la ficha del color, si no
 %no hace nada
 %Posiblemente hacer una regla para cada color
 introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'R'):-
@@ -324,7 +333,7 @@ introducir_mosaico(NPatron, Mosaico, MosaicoOut, 'N'):-
 
 
 
-%Imprime todas las factorÃ­as que hay en el tablero
+%Imprime todas las factorías que hay en el tablero
 imprimir_factorias(Factorias,NFactoria,Longitud):-
     NFactoria < Longitud,
     nth0(NFactoria, Factorias, FactoriaWrite, FactoriasOut),
@@ -338,7 +347,7 @@ imprimir_factorias(Factorias,NFactoria,Longitud).
 
 
 %************************************************************
-%Pide un nÃºmero de factoria elegido por el usuario
+%Pide un número de factoria elegido por el usuario
 %************************************************************
 pedir_n_factoria(Elegida, NFactorias, Factorias):-
     repeat,
@@ -353,7 +362,7 @@ pedir_n_factoria(Elegida, NFactorias, Factorias):-
 
 
 %************************************************************
-%Con la factorÃ­a elegida y el color que queremos nos
+%Con la factoría elegida y el color que queremos nos
 %retorna una lista con las fichas a colocar
 %************************************************************
 eleccion_color([Color|Restantes], FichasCogidas, FichasCodigasOut, FichasSobrantes, FichasSobrantesOut, Contador, Color):-
@@ -386,7 +395,7 @@ elegir_color(FactoriaElegida, Color):-
 
 
 %************************************************************
-%Elige la lÃ­nea que quiere el usuario pero con restricciones
+%Elige la línea que quiere el usuario pero con restricciones
 %************************************************************
 
 %** A **
@@ -457,7 +466,7 @@ elegir_patron(Min,Max,NPatron,Patron,'N'):-
 
 
 %************************************************************
-%Reemplaza el elemento en la posiciÃ³n index por otro elemento
+%Reemplaza el elemento en la posición index por otro elemento
 %************************************************************
 
 replace_index([_|T], 0, X, [X|T]).
@@ -493,7 +502,7 @@ replace(X, Y, [H|T], [H|T2]):-
 
 
 %************************************************************
-%Borra la primera apariciÃ³n del elemento en la lista
+%Borra la primera aparición del elemento en la lista
 %************************************************************
 remove(X, [X|Xs], Xs).
 remove(X, [Y|Ys], [Y|Zs]):-
@@ -504,7 +513,3 @@ remove(X, [Y|Ys], [Y|Zs]):-
 removeAll(_, [], []).
 removeAll(X, [X|T], L):- removeAll(X, T, L), !.
 removeAll(X, [H|T], [H|L]):- removeAll(X, T, L ).
-
-
-
-
