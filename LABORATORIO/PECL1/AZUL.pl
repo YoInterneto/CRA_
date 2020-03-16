@@ -134,7 +134,7 @@ empezar_juego(Jugadores, Juego, Contador):-
 
     reemplazar_fichas(ElegidaIndex, NJug, FichasSobrantesOut, Centro, CentroOut),
 
-    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut),
+    introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut,Caja),
 
     imprimir_patron(PatronOut),
 
@@ -145,7 +145,7 @@ empezar_juego(Jugadores, Juego, Contador):-
     longitud_total(FactoriasOut, FactLong1, Suma, LongTotalOut),
     llenar_bolsa(LongTotalOut, FactoriasOut, FactoriasOutOut, Bolsa, BolsaOut, Jugadores),
 
-    Tablero1Out = [Caja, BolsaOut, FactoriasOutOut, CentroOut],
+    Tablero1Out = [CajaOut, BolsaOut, FactoriasOutOut, CentroOut],
     Tablero2Out = [PatronOut, MosaicoOut, Cementerio],
     JuegoOut = [Tablero1Out, Tablero2Out],
 
@@ -195,7 +195,7 @@ elegir_factoria(Centro, CentroOut, Factorias, FactoriaElegida, Elegida):-
 %Pide el número de patron y mete las fichas elegidas por el
 %en el patron
 %************************************************************
-introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):-
+introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut,Caja):-
 
     imprimir_patron(Patron),
 
@@ -214,7 +214,9 @@ introducir_patron(Patron, PatronOut, FichasCogidas, Color, Mosaico, MosaicoOut):
 
     reemplazar_patron(NPatron, LongitudCogidas, HuecosLibres, PatronElegido, PatronElegidoOut, Color, Mosaico, MosaicoOut),
     count(Color, PatronElegidoOut, Lleno),
-    comprobar_linea(NPatron,Lleno,PatronElegidoOut,PatronElegidoOut1,Mosaico,MosaicoOut,Color),
+    comprobar_linea(NPatron,Lleno,PatronElegidoOut,PatronElegidoOut1,Mosaico,MosaicoOut,Color,Caja,CajaOut),
+    
+    writeln(CajaOut),
     PatronIndex is NPatron - 1,
     replace_index(Patron, PatronIndex, PatronElegidoOut1, PatronOut).
 
@@ -232,10 +234,26 @@ reemplazar_patron(NPatron,LongitudCogidas, HuecosLibres, PatronElegido, PatronEl
 reemplazar_patron(NPatron,0, HuecosLibres, PatronElegido, PatronElegido, Color, Mosaico, MosaicoOut).
 
 
-comprobar_linea(NPatron, NPatron, PatronElegido, PatronElegidoOut, Mosaico, MosaicoOut,Color):-
+comprobar_linea(NPatron, NPatron, PatronElegido, PatronElegidoOut, Mosaico, MosaicoOut,Color,Caja,CajaOut):-
     introducir_mosaico(NPatron, Mosaico, MosaicoOut, Color),
-    replace(Color, '_', PatronElegido, PatronElegidoOut).
-comprobar_linea(NPatron, Lleno, PatronElegido, PatronElegido, Mosaico, Mosaico, Color).
+    replace(Color, '_', PatronElegido, PatronElegidoOut),
+    introducir_caja(NPatron,Caja,CajaOut,Color),
+    writeln(CajaOut).
+comprobar_linea(NPatron, Lleno, PatronElegido, PatronElegido, Mosaico, Mosaico, Color,Caja,CajaOut).
+
+
+%Mete en la caja el numero de veces que el NPatron hasta 1 (NPatron-1 veces)
+introducir_caja(NPatron,Caja,CajaOut,Color):-
+     write(NPatron),
+     writeln(Color),
+     NPatron > 1,
+     append(Caja,[Color],Caja1),
+     write('Caja: '),
+     writeln(Caja1), %Lo muestra bien pero no se guarda
+     NPatron2 is NPatron - 1,
+     introducir_caja(NPatron2,Caja1,CajaOut2,Color).
+     
+introducir_caja(1,Caja,Caja,Color).
 
 
 longitud_total(Factorias, LongFactorias, LongTotal, LongTotalOut):-
