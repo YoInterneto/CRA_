@@ -128,7 +128,7 @@ empezar_juego(Jugadores, Juego, Contador):-
     Tablero1=[_, Bolsa, Factorias, Centro],
     Tablero2=[PatronTodos, MosaicoTodos, Cementerio],
 
-    writeln('********************'),
+    writeln('*******************************'),
     write('Turno del jugador '), writeln(Contador),
     ContadorOut is Contador - 1,
     NJug is  (Jugadores * 2) + 1,
@@ -136,7 +136,15 @@ empezar_juego(Jugadores, Juego, Contador):-
     %Annadimos el nuevo centro a lista de factorias
     replace_index(Factorias,NJug,Centro,FactoriasCentro),
 
+    %Cogemos el Patron y Mosaico del jugador que este en su turno y mostramos en pantalla
+    %su tablero de juego
+    nth1(Contador, PatronTodos, Patron),
+    nth1(Contador, MosaicoTodos, Mosaico),
+    writeln('** PATRON **      ** MOSAICO **'),
+    imprimir_inicio(Patron, Mosaico),writeln(' '),
+
     %Elegimos la factoria y el color que queremos escoger de esa factoria
+    writeln('** FACTORIAS **'),
     elegir_factoria(Centro, CentroOut, FactoriasCentro, FactoriaElegida, Elegida),
     elegir_color(FactoriaElegida, Color),
 
@@ -152,10 +160,9 @@ empezar_juego(Jugadores, Juego, Contador):-
 
     %Cogemos el patron y mosaico del jugador que este jugando en ese momento y introducimos las fichas en
     %el patron y en el caso de necesitarlo se mete en el mosaico
-    nth1(Contador, PatronTodos, Patron),
-    nth1(Contador, MosaicoTodos, Mosaico),
     reemplazar_fichas(ElegidaIndex, NJug, FichasSobrantesOut, Centro, CentroOut),
     introducir_patron(Patron, PatronOut, FichasCogidasOut, Color, Mosaico, MosaicoOut, _, CajaOut),
+    writeln(' '), writeln('** Patron actualizado **'),
     imprimir_patron(PatronOut),
 
     %Una vez cambiados el patron y mosaico del jugador lo reemplazamos por el que habia antes
@@ -177,7 +184,7 @@ empezar_juego(Jugadores, Juego, Contador):-
     Tablero2Out = [PatronTodosOut, MosaicoTodosOut, Cementerio],
     JuegoOut = [Tablero1Out, Tablero2Out],
 
-    writeln('********************'),
+    writeln('*******************************'),
     empezar_juego(Jugadores, JuegoOut, ContadorOut).
 empezar_juego(Jugadores, Juego, 0):- empezar_juego(Jugadores, Juego, Jugadores).
 
@@ -279,6 +286,7 @@ reemplazar_patron(_,0, _, PatronElegido, PatronElegido, _, _, _).
 %la ficha en el mosaico y las sobrantes en la caja
 %************************************************************
 comprobar_linea(NPatron, NPatron, PatronElegido, PatronElegidoOut, Mosaico, MosaicoOut, Color, Caja, CajaOut):-
+    writeln(' '), writeln('** Mosaico actualizado **'),
     introducir_mosaico(NPatron, Mosaico, MosaicoOut, Color),
     replace(Color, '_', PatronElegido, PatronElegidoOut),
     meter_caja(NPatron, Caja, CajaOut, Color).
@@ -323,10 +331,22 @@ imprimir_patron(Patron):-
 
 
 %************************************************************
+%Imprime el patrón de juego y el mosaico al inicio del juego
+%************************************************************
+imprimir_inicio(Patron, Mosaico):-
+    Patron = [Patron1, Patron2, Patron3, Patron4, Patron5],
+    Mosaico = [Mosaico1, Mosaico2, Mosaico3, Mosaico4, Mosaico5],
+    write('1. '), write(Patron1), write('             '), writeln(Mosaico1),
+    write('2. '), write(Patron2), write('           '), writeln(Mosaico2),
+    write('3. '), write(Patron3), write('         '), writeln(Mosaico3),
+    write('4. '), write(Patron4), write('       '), writeln(Mosaico4),
+    write('5. '), write(Patron5), write('     '), writeln(Mosaico5).
+    
+    
+%************************************************************
 %Imprime el patrón de juego
 %************************************************************
 imprimir_mosaico(Mosaico):-
-    writeln('Asi queda el mosaico'),
     Mosaico = [Mosaico1, Mosaico2, Mosaico3, Mosaico4, Mosaico5],
     writeln(Mosaico1),
     writeln(Mosaico2),
