@@ -1,0 +1,114 @@
+% Autor:  Daniel Lopez Moreno 03217279Q
+%         Alvaro de las Heras Fernandez 03146833L
+%         Samuel Garcia Gonzalez 09085497Z
+% Fecha: 14/03/2019
+
+%Consultas
+consult('draw.pl').
+
+%Oracion Simple
+oracion(o(GN,GV)) --> g_nominal(GN), g_verbal(GV).
+
+%Oracion Coordinada
+oracion_coor(ocoor(GN)) --> g_nominal(GN).
+
+%Oracion Subordinada de relativo
+oracion_sub(osub(GN)) --> g_nominal(GN).
+
+%Oracion Compuesta
+oracion_com(ocom(GN)) --> g_nominal(GN).
+
+%Grupo Nominal
+g_nominal(gn(N)) --> nombre(N).
+g_nominal(gn(D,N)) --> determinante(D), nombre(N).
+g_nominal(gn(N,A)) --> nombre(N), adjetivo(A).
+
+%Grupo Adjetival
+g_adjetival(gadj(A))--> adjetivo(A).
+
+%Grupo Adverbial
+g_adverbial(gadv(AD)) -->adverbio(AD).
+
+%Grupo Proposicional
+g_preposicional(gprep(P)) --> preposicion(P).
+
+%Grupo Verbal
+g_verbal(gv(V)) --> verbo(V).
+g_verbal(gv(V,GN)) --> verbo(V), g_nominal(GN).
+g_verbal(gv(V,A)) --> verbo(V),adjetivo(A).
+
+
+%AYUDA  /////////////////////////////////////////////////////////////////////////////////////
+
+%Determinantes
+determinante(det(X)) --> [X],{det(X)}.
+det(el).
+det(la).
+det(un).
+det(una).
+
+%Nombres
+nombre(n(X)) --> [X],{n(X)}.
+n(hombre).
+n(mujer).
+n(manzana).
+n(gato).
+n(raton).
+n(alumno).
+n(universidad).
+
+%Nombres Propios
+nombre_propio(nprop(X)) --> [X],{nprop(X)}.
+nprop(juan).
+nprop(maria).
+
+%Pronombres
+pronombre(pron(X)) --> [X],{pron(X)}.
+pron(yo).
+
+%Verbos
+verbo(v(X)) --> [X], {v(X)}.
+v(ama).
+v(come).
+v(estudia).
+
+%Adjetivos
+adjetivo(adj(X)) --> [X],{adj(X)}.
+adj(roja).
+adj(negro).
+adj(grande).
+adj(gris).
+adj(pequeno).
+
+%Adverbios
+adverbio(adv(X)) --> [X],{adv(X)}.
+adv(muy).
+
+%Conjunciones
+conjuncion(con(X)) --> [X],{con(X)}.
+con(y).
+
+%Preposiciones
+preposicion(prep(X)) --> [X],{prep(X)}.
+prep(a).
+prep(ante).
+prep(bajo).
+prep(cabe).
+prep(con).
+prep(contra).
+prep(de).
+prep(desde).
+prep(durante).
+prep(en).
+prep(entre).
+prep(hacia).
+prep(hasta).
+prep(mediante).
+prep(para).
+prep(por).
+prep(segun).
+prep(sin).
+prep(sobre).
+prep(tras).
+prep(versus).
+prep(via).
