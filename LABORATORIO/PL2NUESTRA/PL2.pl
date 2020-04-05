@@ -24,7 +24,7 @@
 %big -->b    large-->l  T de tamanno
 
 sentence(s(S,V,P,O)) --> nom_p(S,N,_,_), verb(V,N), preposition(P,E),nom_p(O,_,E,_).
-sentence(s(S,V,P,T,O)) --> nom_p(S,N,_,_), verb(V,N),nom_p(T,_,_,_), preposition(P,E),nom_p(O,_,E).
+sentence(s(S,V,P,T,O)) --> nom_p(S,N,_,_), verb(V,N),nom_p(T,_,_,_), preposition(P,E),nom_p(O,_,E,_).
 sentence(s(S,V,O)) --> nom_p(S,N,_,_), verb(V,N), nom_p(O,_,_,_).
 sentence(s(S,V,A)) --> nom_p(S,N,_,T), verb(V,N),adjective(A,_,T).
 sentence(s(S,V,B)) --> nom_p(S,N,_,_), verb(V,N),adverb(B).
@@ -95,7 +95,7 @@ adjective(a(a_2),c,b)  --> [grey].
 adjective(a(a_3),c,b)  --> [big].
 adjective(a(a_3),c,l)  --> [large].
 adjective(a(a_4),c,b)  --> [black].
-adjective(a(a_4),c,b)  --> [amarillo].
+adjective(a(a_5),c,b)  --> [yellow].
 
 adverb(b(b_1)) --> [yesterday].
 adverb(b(b_2)) --> [well].
@@ -118,6 +118,8 @@ oracion(s(S,V,P,T,O)) --> sint_n(S,N), verbo(V,N),sint_n(T,_), preposicion(P),si
 oracion(s(S,V,O)) --> sint_n(S,N), verbo(V,N),sint_n(O,_).
 oracion(s(S,V,A)) --> sint_n(S,N), verbo(V,N),adjetivo(A,_,N).
 oracion(s(S,V,B)) --> sint_n(S,N), verbo(V,N),adverbio(B).
+oracion(s(S,V,B,B2)) --> sint_n(S,N), verbo(V,N),adverbio(B),adverbio(B2).
+
 
 sint_n(np(M,S,A),N) --> articulo(M,G,N), nombre(S,G,N), adjetivo(A,G,N).
 sint_n(np(M,S),N) --> articulo(M,G,N), nombre(S,G,N).
@@ -192,7 +194,7 @@ adverbio(b(b_3)) --> [muy].
 
 pronombre(y_(y_1)) --> [que].
 
-preposicion(y(y_1)) --> [en].
+preposicion(p(p_1)) --> [en].
 
 
 %ejemplo e-i oracion(X,[las,tijeras,cortan,el,papel],[]),sentence(X,Ingles,[]),draw(X).
@@ -250,8 +252,14 @@ preposicion(y(y_1)) --> [en].
 %
 %
 
+%Funciona perfectamente
 %11. El canario amarillo canta muy bien. - The yellow canary sings very well.
-%
+%oracion(X,[el,canario,amarillo,canta,muy,bien],[]),sentence(X,Ingles,[]).
+%sentence(X,[the, yellow, canary, sings, very, well],[]),oracion(X,Espanol,[]).
+
+%12.
+
+
 
 %PARA EJECUTAR-> oracion(X,[juan, ama,a,maria],[]),sentence(X,Ingles,[]),draw(X).
 
