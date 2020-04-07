@@ -211,7 +211,7 @@ sint_n(np(M3,S),N,e2) --> articulo3(M3,C,e2), nombre(S,_,N,C,e2).
 
 
 
-sint_n(np(M,S,A),N,_) --> articulo(M,G,N,C), nombre(S,G,N,C,_), adjetivo(A,G,N).
+sint_n(np(M,S,A),N,TN) --> articulo(M,G,N,C), nombre(S,G,N,C,TN), adjetivo(A,G,N).
 sint_n(np(M,S),N,_) --> articulo(M,G,N,C), nombre(S,G,N,C,e).
 sint_n(np(S),N,e) --> nombre(S,_,N,c,e). %solo va a servir para los contables, por eso se mete la c
 sint_n(np(S),N,p) --> nombre(S,_,N,c,p).
@@ -325,38 +325,38 @@ conjuncion(c(c_1))--> [y].
 %sentence(X,[the,paper,wraps,the,stone],[]),oracion(X,Espanol,[]),draw(X).
 
 %Controlada perfectamente
-%1. El hombre come una manzana
+%1. El hombre come una manzana     , bieeen
 %oracion(X,[el, hombre, come, una, manzana],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,man,eats,an,apple],[]),oracion(X,Espanol,[]).
 
-%Hay que controlar lo de some, perfecto ****************
+%Hay que controlar lo de some, perfecto , bieeen
 %2.  Ellos comen manzanas
 %oracion(X,[ellos, comen, manzanas],[]),sentence(X,Ingles,[]).
 %sentence(X,[they, eat, some, apples],[]),oracion(X,Espanol,[]).
 
 %Funciona perfectamente
-%3.  Tu comes una manzana roja. - You eat a red apple.
+%3.  Tu comes una manzana roja. - You eat a red apple., bieeen
 %oracion(X,[tu,comes,una,manzana,roja],[]),sentence(X,Ingles,[]).
 %sentence(X,[you,eat,a,red,apple],[]),oracion(X,Espanol,[]).
 
 
-%Falta controlar lo de a Maria, ya funciona
+%Falta controlar lo de a Maria, ya funciona   , bieeen
 %4.  Juan ama a Maria. - John loves Mary
 %oracion(X,[juan, ama,a,maria],[]),sentence(X,Ingles,[]).
 %sentence(X,[john,loves,mary],[]),oracion(X,Espanol,[]).
 
-%Funciona perfectamente
+%Funciona perfectamente              , bieeen
 %5.  El gato grande come un raton gris. The big cat eats a grey mouse.
 %oracion(X,[el,gato,grande,come,un,raton,gris],[]),sentence(X,Ingles,[]).
 %sentence(X,[the, big, cat, eats, a, grey, mouse],[]),oracion(X,Espanol,[]).
 
 
-%Falta controlar que no ponga el the, ya funciona
+%Falta controlar que no ponga el the, ya funciona   , bieeen
 %6. Juan estudia en la universidad. - John studies at university.
 %oracion(X,[juan,estudia,en,la,universidad],[]),sentence(X,Ingles,[]).
 %sentence(X,[john,studies,at,university],[]),oracion(X,Espanol,[]).
 
- %Falta controlar que no ponga el the, hay que hacer algo para que no ponga ama a
+ %Falta controlar que no ponga el the, hay que hacer algo para que no ponga ama a, bieeen
 %7.  El alumno ama la universidad. - The student loves university.
 %oracion(X,[el,alumno,ama,la,universidad],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,student,loves,university],[]),oracion(X,Espanol,[]).
@@ -366,7 +366,7 @@ conjuncion(c(c_1))--> [y].
 %oracion(X,[el,perro,persiguio,un,gato,negro,en,el,jardin],[]),sentence(X,Ingles,[]).
 %sentence(X,[the, dog, chased, a, black, cat, in, the, garden],[]),oracion(X,Espanol,[]).
 
-%Funciona perfectamente         ******************
+%Funciona perfectamente         ******************    controlar que ponga el the
 %9.  La Universidad es grande. - The University is large.
 %oracion(X,[la, universidad, es, grande],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,university,is,large],[]),oracion(X,Espanol,[]).
