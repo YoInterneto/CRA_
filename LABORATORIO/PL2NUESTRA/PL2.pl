@@ -1,4 +1,4 @@
- % Author:
+% Author:
 % Date: 04/04/2020
 
 
@@ -172,6 +172,9 @@ oracion(s(S,V,O)) --> sint_n(S,N,_), verbo(V,N,_),sint_n(O,_,e).%probablemente h
 %Oracion ama a
 oracion(s(S,V,P2,O)) --> sint_n(S,N,_), verbo(V,N,t), preposicion2(P2,p), sint_n(O,_,p).
 
+%Oracion ama la universidad, falta quitar el the
+oracion(s(S,V,O)) --> sint_n(S,N,_), verbo(V,N,t), sint_n(O,_,e2).
+
 %Oraciones con sintagmas preposicionales
 oracion(s(S,V,P,O)) --> sint_n(S,N,_), verbo(V,N,i), preposicion(P),sint_n(O,_,e).  %cambiar p
 oracion(s(S,V,P,T,O)) --> sint_n(S,N,_), verbo(V,N,i),sint_n(T,_,_), preposicion(P),sint_n(O,_,_).
@@ -196,7 +199,7 @@ oracion(s(S,Y,V,B,V2,O)) --> sint_n(S,N,_), pronombre(Y),verbo(V,_,i),adverbio(B
 
 
 %Para caso de some apples
-sint_n(np(M2,S),N,_) --> articulo2(M2,C), nombre(S,_,N,C,_).
+sint_n(np(M2,S),_,e) --> articulo2(M2,C), nombre(S,_,_,C,e).
 
 
 %Para caso quitar the university
@@ -204,14 +207,15 @@ sint_n(np(P,M3,S),N,_) --> preposicion(P), articulo3(M3,C,_), nombre(S,_,N,C,_).
 
 
 %Para caso quitar the university de ama la universidad
-%sint_n(np(M3,S),N,_) --> articulo3(M3,C,e), nombre(S,_,N,C,e).
+sint_n(np(M3,S),N,e2) --> articulo3(M3,C,e2), nombre(S,_,N,C,e2).
 
 
 
 sint_n(np(M,S,A),N,_) --> articulo(M,G,N,C), nombre(S,G,N,C,_), adjetivo(A,G,N).
-sint_n(np(M,S),N,TN) --> articulo(M,G,N,C), nombre(S,G,N,C,TN).
-sint_n(np(S),N,TN) --> nombre(S,_,N,c,TN). %solo va a servir para los contables, por eso se mete la c
-sint_n(np(S),N,TN) --> nombre(S,_,N,c2,TN). %solo va a servir para los contables, por eso se mete la c2
+sint_n(np(M,S),N,_) --> articulo(M,G,N,C), nombre(S,G,N,C,e).
+sint_n(np(S),N,e) --> nombre(S,_,N,c,e). %solo va a servir para los contables, por eso se mete la c
+sint_n(np(S),N,p) --> nombre(S,_,N,c,p).
+%sint_n(np(S),N,e2) --> nombre(S,_,N,c2,e2). %solo va a servir para los contables, por eso se mete la c2 %****************************************
 sint_n(np(S,S2),N,_) --> nombre(S,_,N,_,_),nombre(S2,_,N,_,_).
 
 
@@ -230,7 +234,7 @@ articulo(m(art_3),m,sg,c) --> [mi].
 %Para el some apples
 articulo2(m2(art2_1),u) --> [].
 
-articulo3(m3(art3_1),c2,e1) --> [la].
+articulo3(m3(art3_1),c2,e2) --> [la].
 
 
 
@@ -325,7 +329,7 @@ conjuncion(c(c_1))--> [y].
 %oracion(X,[el, hombre, come, una, manzana],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,man,eats,an,apple],[]),oracion(X,Espanol,[]).
 
-%Hay que controlar lo de some, perfecto
+%Hay que controlar lo de some, perfecto ****************
 %2.  Ellos comen manzanas
 %oracion(X,[ellos, comen, manzanas],[]),sentence(X,Ingles,[]).
 %sentence(X,[they, eat, some, apples],[]),oracion(X,Espanol,[]).
@@ -362,7 +366,7 @@ conjuncion(c(c_1))--> [y].
 %oracion(X,[el,perro,persiguio,un,gato,negro,en,el,jardin],[]),sentence(X,Ingles,[]).
 %sentence(X,[the, dog, chased, a, black, cat, in, the, garden],[]),oracion(X,Espanol,[]).
 
-%Funciona perfectamente
+%Funciona perfectamente         ******************
 %9.  La Universidad es grande. - The University is large.
 %oracion(X,[la, universidad, es, grande],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,university,is,large],[]),oracion(X,Espanol,[]).
@@ -393,10 +397,3 @@ conjuncion(c(c_1))--> [y].
 % sentence(X,[oscar,wilde,wrote,the,canterville,ghost],[]),oracion(X,Espanol,[]).
 
 
-
-
-
-
-
-
-%PARA EJECUTAR-> oracion(X,[juan, ama,a,maria],[]),sentence(X,Ingles,[])
