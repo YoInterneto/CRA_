@@ -53,8 +53,11 @@ sentence(s(S,Y,V,B,V2,O)) --> nom_p(S,N,_,T,_), pronoun(Y),verb(V,_),adverb(B),v
 %Caso para some apples
 nom_p(np(M2,S),N,E,_,_) --> modifier2(M2), noun(S,N,_,E,_,u).
 
-%Para no poner at the
+%Para no poner at the universidad
 nom_p(np(P,M3,S),N,E,_,C) --> preposition(P,C), modifier3(M3), noun(S,N,_,E,_,C).
+
+%Para caso quitar the university de ama la universidad
+nom_p(np(M3,S),N,E,_,C) --> modifier3(M3), noun(S,N,_,E,_,C).
 
 
 
@@ -151,7 +154,8 @@ adverb(b(b_3)) --> [very].
 %para disntiguir de preposicion ponemos y en vez de p
 pronoun(y(y_1)) --> [that].
 
-%Para distinguir que no ponga at the cuando es en el
+%Para distinguir que no ponga at the cuando es en el, y ponga at
+
 preposition(p(p_1),a) --> [at].
 preposition(p(p_1),i) --> [in].
 preposition(p(p_1),o) --> [on].
@@ -163,47 +167,58 @@ conjunction(c(c_1))--> [and].
 %Annadir cuando es in y cuando at
 
 %Oracion simple
-oracion(s(S,V,O)) --> sint_n(S,N), verbo(V,N,i),sint_n(O,_).
+oracion(s(S,V,O)) --> sint_n(S,N,_), verbo(V,N,_),sint_n(O,_,e).%probablemente haya que poner lo mismo pero con e2
 
 %Oracion ama a
-oracion(s(S,V,P2,O)) --> sint_n(S,N), verbo(V,N,t), preposicion2(P2), sint_n(O,_).
+oracion(s(S,V,P2,O)) --> sint_n(S,N,_), verbo(V,N,t), preposicion2(P2,p), sint_n(O,_,p).
 
 %Oraciones con sintagmas preposicionales
-oracion(s(S,V,P,O)) --> sint_n(S,N), verbo(V,N,i), preposicion(P),sint_n(O,_).
-oracion(s(S,V,P,T,O)) --> sint_n(S,N), verbo(V,N,i),sint_n(T,_), preposicion(P),sint_n(O,_).
+oracion(s(S,V,P,O)) --> sint_n(S,N,_), verbo(V,N,i), preposicion(P),sint_n(O,_,e).  %cambiar p
+oracion(s(S,V,P,T,O)) --> sint_n(S,N,_), verbo(V,N,i),sint_n(T,_,_), preposicion(P),sint_n(O,_,_).
 
 %Oraciones coordinadas
-oracion(s(S,V,O,C,V2,O2)) --> sint_n(S,N), verbo(V,N,i),sint_n(O,_),conjuncion(C),verbo(V2,N,i),sint_n(O2,_).
-oracion(s(S,V,A,C,O,V2,A2)) --> sint_n(S,N), verbo(V,N,i),adjetivo(A,_,N),conjuncion(C),sint_n(O,_),verbo(V2,N,i),adjetivo(A2,_,N).
+oracion(s(S,V,O,C,V2,O2)) --> sint_n(S,N,_), verbo(V,N,i),sint_n(O,_,_),conjuncion(C),verbo(V2,N,i),sint_n(O2,_,_).
+oracion(s(S,V,A,C,O,V2,A2)) --> sint_n(S,N,_), verbo(V,N,i),adjetivo(A,_,N),conjuncion(C),sint_n(O,_,_),verbo(V2,N,i),adjetivo(A2,_,N).
 
 %Oraciones con sintagmas adjetivales
-oracion(s(S,V,A)) --> sint_n(S,N), verbo(V,N,i),adjetivo(A,_,N).
+oracion(s(S,V,A)) --> sint_n(S,N,_), verbo(V,N,i),adjetivo(A,_,N).
 
 %Oraciones con sintagams adverbiales
-oracion(s(S,V,B)) --> sint_n(S,N), verbo(V,N,i),adverbio(B).
-oracion(s(S,V,B,B2)) --> sint_n(S,N), verbo(V,N,i),adverbio(B),adverbio(B2).
+oracion(s(S,V,B)) --> sint_n(S,N,_), verbo(V,N,i),adverbio(B).
+oracion(s(S,V,B,B2)) --> sint_n(S,N,_), verbo(V,N,i),adverbio(B),adverbio(B2).
 
 %Oracion subordinada
-oracion(s(S,Y,V,B,V2,O)) --> sint_n(S,N), pronombre(Y),verbo(V,_,i),adverbio(B),verbo(V2,N,i),sint_n(O,_).
+oracion(s(S,Y,V,B,V2,O)) --> sint_n(S,N,_), pronombre(Y),verbo(V,_,i),adverbio(B),verbo(V2,N,i),sint_n(O,_,_).
+
+%Para distinguir cuando hay que poner some o no metemos un parametro de contable (c) o incontable(u)
+%Controlar que no ponga la universidad (cambiando el at)
+%oracion(s(S,V,P,O)) --> sint_n(S,N,_), verbo(V,N,i), preposicion(P),sint_n(O,_,_).
 
 
 %Para caso de some apples
-sint_n(np(M2,S),N) --> articulo2(M2,C), nombre(S,_,N,C).
+sint_n(np(M2,S),N,_) --> articulo2(M2,C), nombre(S,_,N,C,_).
 
 
 %Para caso quitar the university
-sint_n(np(P,M3,S),N) --> preposicion(P), articulo3(M3,C), nombre(S,_,N,C).
+sint_n(np(P,M3,S),N,_) --> preposicion(P), articulo3(M3,C,_), nombre(S,_,N,C,_).
+
+
+%Para caso quitar the university de ama la universidad
+%sint_n(np(M3,S),N,_) --> articulo3(M3,C,e), nombre(S,_,N,C,e).
 
 
 
+sint_n(np(M,S,A),N,_) --> articulo(M,G,N,C), nombre(S,G,N,C,_), adjetivo(A,G,N).
+sint_n(np(M,S),N,TN) --> articulo(M,G,N,C), nombre(S,G,N,C,TN).
+sint_n(np(S),N,TN) --> nombre(S,_,N,c,TN). %solo va a servir para los contables, por eso se mete la c
+sint_n(np(S),N,TN) --> nombre(S,_,N,c2,TN). %solo va a servir para los contables, por eso se mete la c2
+sint_n(np(S,S2),N,_) --> nombre(S,_,N,_,_),nombre(S2,_,N,_,_).
 
-sint_n(np(M,S,A),N) --> articulo(M,G,N,C), nombre(S,G,N,C), adjetivo(A,G,N).
-sint_n(np(M,S),N) --> articulo(M,G,N,C), nombre(S,G,N,C).
-sint_n(np(S),N) --> nombre(S,_,N,c). %solo va a servir para los contables, por eso se mete la c
-sint_n(np(S,S2),N) --> nombre(S,_,N,_),nombre(S2,_,N,_).
+
 
 
 articulo(m(art_1),f,sg,c) --> [la].
+articulo(m(art_1),f,sg,c2) --> [la].
 articulo(m(art_1),m,sg,c) --> [el].
 articulo(m(art_1),f,pl,c) --> [las].
 articulo(m(art_2),f,sg,c) --> [una].
@@ -215,44 +230,48 @@ articulo(m(art_3),m,sg,c) --> [mi].
 %Para el some apples
 articulo2(m2(art2_1),u) --> [].
 
-articulo3(m3(art3_1),c2) --> [la].
+articulo3(m3(art3_1),c2,e1) --> [la].
+
+
 
 %Para ama a
-preposicion2(p2(p2_1)) --> [a].
+preposicion2(p2(p2_1),p) --> [a].
 
-%Para distinguir cuando hay que poner some o no metemos un parametro de contable (c) o incontable(u)
-%Controlar que no ponga la universidad (cambiando el at)
-%oracion(s(S,V,P,O)) --> sint_n(S,N), verbo(V,N,i), preposicion(P),sint_n(O,_).
+%Para quitar el the de loves the university
 
 
 
 
 
-nombre(n(n_1),f,sg,c) --> [piedra].
-nombre(n(n_2),m,sg,c) --> [papel].
-nombre(n(n_3),f,pl,c) --> [tijeras].
-nombre(n(n_4),m,sg,c) --> [hombre].
-nombre(n(n_5),f,sg,c) --> [manzana].
-nombre(n(n_6),f,pl,u) --> [manzanas].
-nombre(n(n_7),m,pl,c) --> [ellos].
-nombre(n(n_8),m,sg,c) --> [tu].
-nombre(n(n_9),m,sg,c) --> [juan].
-nombre(n(n_10),f,sg,c) --> [maria].
-nombre(n(n_11),m,sg,c) --> [gato].
-nombre(n(n_12),m,sg,c) --> [raton].
-nombre(n(n_13),f,sg,c2) --> [universidad].
-nombre(n(n_14),m,sg,c) --> [alumno].
-nombre(n(n_15),m,sg,c) --> [perro].
-nombre(n(n_16),m,sg,c) --> [jardin].
-nombre(n(n_17),m,pl,c) --> [nosotros].
-nombre(n(n_18),m,sg,c) --> [vecino].
-nombre(n(n_19),m,sg,c) --> [canario].
-nombre(n(n_20),m,sg,c) --> [cafe].
-nombre(n(n_21),m,sg,c) --> [periodico].
-nombre(n(n_22),m,sg,c) --> [oscar].
-nombre(n(n_23),m,sg,c) --> [wilde].
-nombre(n(n_24),m,sg,c) --> [fantasma].
-nombre(n(n_25),m,sg,c) --> [canterville].
+
+%Hay que annadir otro parametro (TN) para que cuando se anombre propio (p) ponga ama a y cuando sea comun (e) ponga ama solo
+%Annadimos otro parametro para que ponga ama la universidad y al contrario loves
+
+nombre(n(n_1),f,sg,c,e) --> [piedra].
+nombre(n(n_2),m,sg,c,e) --> [papel].
+nombre(n(n_3),f,pl,c,e) --> [tijeras].
+nombre(n(n_4),m,sg,c,e) --> [hombre].
+nombre(n(n_5),f,sg,c,e) --> [manzana].
+nombre(n(n_6),f,pl,u,e) --> [manzanas].
+nombre(n(n_7),m,pl,c,p) --> [ellos].
+nombre(n(n_8),m,sg,c,e) --> [tu].
+nombre(n(n_9),m,sg,c,p) --> [juan].
+nombre(n(n_10),f,sg,c,p) --> [maria].
+nombre(n(n_11),m,sg,c,e) --> [gato].
+nombre(n(n_12),m,sg,c,e) --> [raton].
+nombre(n(n_13),f,sg,c2,e2) --> [universidad].
+nombre(n(n_14),m,sg,c,e) --> [alumno].
+nombre(n(n_15),m,sg,c,e) --> [perro].
+nombre(n(n_16),m,sg,c,e) --> [jardin].
+nombre(n(n_17),m,pl,c,e) --> [nosotros].
+nombre(n(n_18),m,sg,c,e) --> [vecino].
+nombre(n(n_19),m,sg,c,e) --> [canario].
+nombre(n(n_20),m,sg,c,e) --> [cafe].
+nombre(n(n_21),m,sg,c,e) --> [periodico].
+nombre(n(n_22),m,sg,c,p) --> [oscar].
+nombre(n(n_23),m,sg,c,p) --> [wilde].
+nombre(n(n_24),m,sg,c,p) --> [fantasma].
+nombre(n(n_25),m,sg,c,p) --> [canterville].
 
 
 %Para distinguir cuando hay que poner a o no, metemos un parametro de transitivo (t) o intransitivo (in)
@@ -306,7 +325,7 @@ conjuncion(c(c_1))--> [y].
 %oracion(X,[el, hombre, come, una, manzana],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,man,eats,an,apple],[]),oracion(X,Espanol,[]).
 
-%Hay que controlar lo de some
+%Hay que controlar lo de some, perfecto
 %2.  Ellos comen manzanas
 %oracion(X,[ellos, comen, manzanas],[]),sentence(X,Ingles,[]).
 %sentence(X,[they, eat, some, apples],[]),oracion(X,Espanol,[]).
@@ -333,7 +352,7 @@ conjuncion(c(c_1))--> [y].
 %oracion(X,[juan,estudia,en,la,universidad],[]),sentence(X,Ingles,[]).
 %sentence(X,[john,studies,at,university],[]),oracion(X,Espanol,[]).
 
- %Falta controlar que no ponga el the, hay que hacer algo para que n ponga ama a
+ %Falta controlar que no ponga el the, hay que hacer algo para que no ponga ama a
 %7.  El alumno ama la universidad. - The student loves university.
 %oracion(X,[el,alumno,ama,la,universidad],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,student,loves,university],[]),oracion(X,Espanol,[]).
