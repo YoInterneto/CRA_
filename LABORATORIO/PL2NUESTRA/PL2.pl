@@ -70,7 +70,7 @@ sentence(s(S,V,B)) --> nom_p(S,N,_,_,_,n), verb(V,N),nom_adv(B).
 %sentence(s(S,V,B)) --> nom_p(S,N,_,_,_,n), verb(V,N),nom_adv(B).
 
 %Oracion subordinada
-sentence(s(S,Y,V,B)) --> nom_p(S,N,_,T,_,n), pronoun(Y),noun(n(n_17),pl,c,i,b,co),verb(V,_),nom_adv(B).
+sentence(s(S,Y,V,B)) --> nom_p(S,_,_,_,_,n), pronoun(Y),noun(n(n_17),pl,c,i,b,co),verb(V,_),nom_adv(B).
 
 %sentence(s(S,Y,V,B,V2,O)) --> nom_p(S,N,_,T,_,n), pronoun(Y),noun(n(n_17),pl,c,i,b,co),verb(V,_),adverb(B),verb(V2,N),nom_p(O,_,_,T,_,n).
 
@@ -275,7 +275,7 @@ oracion(s(S,V,B)) --> sint_n(S,N,_,n), verbo(V,N,i),sint_adv(B).
 %Oracion subordinada
 %oracion(s(S,Y,S2,V,B,V2,O)) --> sint_n(S,N,_,n), pronombre(Y),sint_n(S2,_,_,n),verbo(V,_,i),adverbio(B),verbo(V2,N,i),sint_n(O,_,_,n).
 %oracion(s(S,Y,V,B,V2,O)) --> sint_n(S,N,s2,n), pronombre(Y),verbo(V,_,i),adverbio(B),verbo(V2,N,i),sint_n(O,_,_,n).
-oracion(s(S,Y,V,B)) --> sint_n(S,N,s2,n), pronombre(Y),verbo(V,_,i),sint_adv(B).
+oracion(s(S,Y,V,B)) --> sint_n(S,_,s2,n), pronombre(Y),verbo(V,_,i),sint_adv(B).
 
 
 
@@ -507,7 +507,7 @@ conjuncion(c(c_1))--> [y].
 
 %Perfecta, comprobar
 %14. Oscar Wilde escribio El Fantasma de Canterville - Oscar Wilde wrote The Canterville Ghost.
-% oracion(X,[oscar,wilde,escribio,el,fantasma,de,canterville],[]),sentence(X,Ingles,[]).
-% sentence(X,[oscar,wilde,wrote,the,canterville,ghost],[]),oracion(X,Espanol,[]).
+%oracion(X,[oscar,wilde,escribio,el,fantasma,de,canterville],[]),sentence(X,Ingles,[]).
+%sentence(X,[oscar,wilde,wrote,the,canterville,ghost],[]),oracion(X,Espanol,[]).
 
 
