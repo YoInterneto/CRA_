@@ -29,8 +29,11 @@
 
 
 
-%Oracion compuesta
-compound_sentence(os(O1,C,O2)) -->sentence(O1),conjunction(C),sentence(O2).
+%Oracion compuesta   coordinada
+compound_sentence(os(O1,C,O2)) --> sentence(O1),conjunction(C),sentence(O2).
+
+%Oracion compuesta subordinada
+compound_sentence(os(O1,O2)) --> sentence(O1),sentence(O2).
 
 
 
@@ -67,11 +70,18 @@ sentence(s(S,V,B)) --> nom_p(S,N,_,_,_,n), verb(V,N),nom_adv(B).
 %sentence(s(S,V,B)) --> nom_p(S,N,_,_,_,n), verb(V,N),nom_adv(B).
 
 %Oracion subordinada
-sentence(s(S,Y,S2,V,B,V2,O)) --> nom_p(S,N,_,T,_,n), pronoun(Y),nom_p(S2,_,_,_,_,n),verb(V,_),adverb(B),verb(V2,N),nom_p(O,_,_,T,_,n).
+sentence(s(S,Y,V,B)) --> nom_p(S,N,_,T,_,n), pronoun(Y),noun(n(n_17),pl,c,i,b,co),verb(V,_),nom_adv(B).
+
+%sentence(s(S,Y,V,B,V2,O)) --> nom_p(S,N,_,T,_,n), pronoun(Y),noun(n(n_17),pl,c,i,b,co),verb(V,_),adverb(B),verb(V2,N),nom_p(O,_,_,T,_,n).
 
 
 %Caso para some apples
 %nom_p(np(S),N,E,_,_) --> modifier2(m2(art2_1)), noun(S,N,_,E,_,u).
+
+%CASO NOSOTROS VIMOS*******************************************
+
+
+
 
 %Caso para some apples
 %nom_p(np(M2,S),N,E,_,_) --> modifier2(M2), noun(S,N,_,E,_,u).
@@ -158,10 +168,10 @@ noun(n(n_18),sg,c,i,b,co) --> [neighbour].
 noun(n(n_19),sg,c,i,b,co) --> [canary].
 noun(n(n_20),sg,c,i,b,co) --> [coffee].
 noun(n(n_21),sg,c,i,b,co) --> [newspaper].
-noun(n(n_22),sg,c,i,b,co) --> [oscar].
-noun(n(n_23),sg,c,i,b,co) --> [wilde].
-noun(n(n_24),sg,c,i,b,co) --> [ghost].
-noun(n(n_25),sg,c,i,b,co) --> [canterville].
+noun(n(n_22),sg,c,i,b,co) --> [oscar,wilde].
+%noun(n(n_23),sg,c,i,b,co) --> [wilde].
+noun(n(n_24),sg,c,i,b,co) --> [canterville, ghost].
+%noun(n(n_25),sg,c,i,b,co) --> [canterville].
 
 
 
@@ -221,6 +231,9 @@ conjunction(c(c_1))--> [and].
 %Oracion compuesta
 oracion_compuesta(os(O1,C,O2)) -->oracion(O1),conjuncion(C),oracion(O2).
 
+%Oracion compuesta subordinada
+oracion_compuesta(os(O1,O2)) -->oracion(O1),oracion(O2).
+
 %Oracion simple
 oracion(s(S,V,O)) --> sint_n(S,N,_,n), verbo(V,N,_),sint_n(O,_,e,_).%probablemente haya que poner lo mismo pero con e2
 %Caso para coordinada
@@ -260,11 +273,17 @@ oracion(s(S,V,B)) --> sint_n(S,N,_,n), verbo(V,N,i),sint_adv(B).
 %oracion(s(S,V,B)) --> sint_n(S,N,_,n), verbo(V,N,i),sint_adv(B).
 
 %Oracion subordinada
-oracion(s(S,Y,S2,V,B,V2,O)) --> sint_n(S,N,_,n), pronombre(Y),sint_n(S2,_,_,n),verbo(V,_,i),adverbio(B),verbo(V2,N,i),sint_n(O,_,_,n).
+%oracion(s(S,Y,S2,V,B,V2,O)) --> sint_n(S,N,_,n), pronombre(Y),sint_n(S2,_,_,n),verbo(V,_,i),adverbio(B),verbo(V2,N,i),sint_n(O,_,_,n).
+%oracion(s(S,Y,V,B,V2,O)) --> sint_n(S,N,s2,n), pronombre(Y),verbo(V,_,i),adverbio(B),verbo(V2,N,i),sint_n(O,_,_,n).
+oracion(s(S,Y,V,B)) --> sint_n(S,N,s2,n), pronombre(Y),verbo(V,_,i),sint_adv(B).
+
+
 
 %Para distinguir cuando hay que poner some o no metemos un parametro de contable (c) o incontable(u)
 %Controlar que no ponga la universidad (cambiando el at)
 %oracion(s(S,V,P,O)) --> sint_n(S,N,_), verbo(V,N,i), preposicion(P),sint_n(O,_,_).
+
+%CASO NOSOTROS VIMOS*******************************************
 
 
 
@@ -338,6 +357,7 @@ preposicion2(p2(p2_1),p) --> [a].
 %Annadimos otro parametro para que ponga ama la universidad y al contrario loves
 %Para la universidad es grande, hay que controlar que ponga la universidad por lo que quizas tendremos que hacer otro tipo que sea nombre2
 
+%lE METEMOS OTRO PARAMETRO PARA CUANDO SE PUEDA OMITIR (o) Y CUANDO NO (no)     para la subordinada, luego vemos
 nombre(n(n_1),f,sg,c,e) --> [piedra].
 nombre(n(n_2),m,sg,c,e) --> [papel].
 nombre(n(n_3),f,pl,c,e) --> [tijeras].
@@ -354,15 +374,15 @@ nombre(n(n_13),f,sg,c2,e2) --> [universidad].
 nombre(n(n_14),m,sg,c,e) --> [alumno].
 nombre(n(n_15),m,sg,c,e) --> [perro].
 nombre(n(n_16),m,sg,c,e) --> [jardin].
-nombre(n(n_17),m,pl,c,e) --> [nosotros].
+nombre(n(n_17),m,pl,c,so) --> [nosotros].
 nombre(n(n_18),m,sg,c,e) --> [vecino].
 nombre(n(n_19),m,sg,c,e) --> [canario].
 nombre(n(n_20),m,sg,c,e) --> [cafe].
 nombre(n(n_21),m,sg,c,e) --> [periodico].
-nombre(n(n_22),m,sg,c,p) --> [oscar,wilde].
-nombre(n(n_23),m,sg,c,p) --> [wilde].
-nombre(n(n_24),m,sg,c,p) --> [fantasma].
-nombre(n(n_25),m,sg,c,p) --> [canterville].
+nombre(n(n_22),m,sg,c,e) --> [oscar,wilde].
+%nombre(n(n_23),m,sg,c,p) --> [wilde].
+nombre(n(n_24),m,sg,c,e) --> [fantasma,de,canterville].
+%nombre(n(n_25),m,sg,c,p) --> [canterville].
 
 
 %Para distinguir cuando hay que poner a o no, metemos un parametro de transitivo (t) o intransitivo (in)
@@ -458,10 +478,17 @@ conjuncion(c(c_1))--> [y].
 %oracion(X,[la, universidad, es, grande],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,university,is,large],[]),oracion(X,Espanol,[]).
 
-%Falta lo del sujeto, funciona
+%Perfecta, falta el arbol
 %10. El hombre que vimos ayer es mi vecino. - The man that we saw yesterday is my neighbour.
 %oracion(X,[el,hombre,que,vimos,ayer,es,mi,vecino],[]),sentence(X,Ingles,[]).
 %sentence(X,[the,man,that,we,saw,yesterday,is,my,neighbour],[]),oracion(X,Espanol,[]).
+
+
+%oracion_compuesta(X,[el,hombre,que,vimos,ayer,es,mi,vecino],[]),compound_sentence(X,Ingles,[]).
+%compound_sentence(X,[the,man,that,we,saw,yesterday,is,my,neighbour],[]),oracion_compuesta(X,Espanol,[]).
+
+%oracion(X,[vimos,una,manzana],[]),sentence(X,Ingles,[]).
+%sentence(X,[we,saw,an,apple],[]),oracion(X,Espanol,[]).
 
 %Perfecta
 %11. El canario amarillo canta muy bien. - The yellow canary sings very well.
@@ -473,12 +500,12 @@ conjuncion(c(c_1))--> [y].
 %oracion_compuesta(X,[juan,toma,un,cafe,y,lee,el,periodico],[]),compound_sentence(X,Ingles,[]).
 %compound_sentence(X,[john, has, a, coffee, and, reads, the, newspaper],[]),oracion_compuesta(X,Espanol,[]).
 
-%Funciona perfectamente
+%Perfecta
 %13. Juan es delgado y Maria es alta. - John is thin and Mary is tall.
 %oracion_compuesta(X,[juan,es,delgado,y,maria,es,alta],[]),compound_sentence(X,Ingles,[]).
 %compound_sentence(X,[john, is,thin,and,mary,is,tall],[]),oracion_compuesta(X,Espanol,[]).
 
-%Falta comprobar quitar el de
+%Perfecta, comprobar
 %14. Oscar Wilde escribio El Fantasma de Canterville - Oscar Wilde wrote The Canterville Ghost.
 % oracion(X,[oscar,wilde,escribio,el,fantasma,de,canterville],[]),sentence(X,Ingles,[]).
 % sentence(X,[oscar,wilde,wrote,the,canterville,ghost],[]),oracion(X,Espanol,[]).
