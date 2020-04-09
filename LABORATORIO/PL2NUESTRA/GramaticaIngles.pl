@@ -1,0 +1,52 @@
+% Author:
+% Date: 09/04/2020
+
+%GRAMATICA INGLES
+
+%ORACIONES SIMPLES
+sentence(s(S,V,O)) --> nom_p(S,N,_,_,_,n), verb(V,N), nom_p(O,_,_,_,_,_).
+sentence(s(V,O)) --> verb(V,_),nom_p(O,_,_,_,_,_).
+
+%ORACIONES CON SINTAGMAS PREPOSICIONALES
+sentence(s(S,V,O)) --> nom_p(S,N,_,_,_,n), verb(V,N), nom_prep(O,_,_,_,_,s).
+sentence(s(S,V,T,O)) --> nom_p(S,N,_,_,_,n), verb(V,N),nom_p(T,_,_,_,_,n), nom_prep(O,_,_,_,_,n).
+
+%ORACIONES CON ADJETIVOS
+sentence(s(S,V,A)) --> nom_p(S,N,_,T,_,n), verb(V,N), adjective(A,_,T).
+
+%ORACIONES CON SINTAGMAS ADVERBIALES
+sentence(s(S,V,B)) --> nom_p(S,N,_,_,_,n), verb(V,N),nom_adv(B).
+
+%CASO ESPECIAL PARA SUBORDINADA
+sentence(s(S,Y,V,B)) --> nom_p(S,_,_,_,_,n), pronoun(Y),noun(n(n_17),pl,c,i,b,co),verb(V,_),nom_adv(B).
+
+%ORACIONES COMPUESTAS
+%COORDINADA
+compound_sentence(os(O1,C,O2)) --> sentence(O1),conjunction(C),sentence(O2).
+
+%SUBORDINADA
+compound_sentence(os(O1,O2)) --> sentence(O1),sentence(O2).
+
+%SINTAGMAS NOMINALES
+%TIENE COMO PARAMETROS EL NUMERO, E, QUE INDICA LA PREPOSICION, T, QUE INDICA EL TAMANIO, SI ES CONTABLE O NO Y N O S PARA DIFERENCIAR LOS CASOS DE LAS PREGUNTAS 6 Y 7 CON LA 9
+nom_p(np(M,S,A),N,E,T,_,n) --> modifier(M,L),adjective(A,L,T), noun(S,N,_,E,T,_).
+nom_p(np(M,S),N,E,T,co,n) --> modifier(M,L), noun(S,N,L,E,T,co).
+nom_p(np(S),N,E,T,_,n) --> noun(S,N,_,E,T,co).
+
+%CASOS ESPECIALES
+
+%CASO ESPECIAL PARA PREGUNTA 2
+nom_p(np(S),N,E,_,_,n) --> modifier2(m2(art2_1)), noun(S,N,_,E,_,u).
+
+%CASO ESPECIAL PARA PREGUNTAS 6 Y 7
+nom_p(np(S),N,E,_,C,s) --> noun(S,N,_,E,l,C).
+
+%CASO ESPECIAL PARA PREGUNTA 9
+nom_p(np(M,S),N,E,T,_,n) --> modifier(M,c), noun(S,N,v,E,T,a).   %caso pregunta 9
+
+%SINTAGMAS PREPOSICIONALES, LOS PARAMETROS SON LOS MISMOS QUE LOS NOMINALES
+nom_prep(nprep(P,O),_,E,_,C,F) --> preposition(P,E), nom_p(O,_,E,_,C,F).
+
+%SINTAGMAS ADVERBIALES
+nom_adv(sadv(B)) --> adverb(B).
+nom_adv(sadv(B,B2)) --> adverb(B),adverb(B2).

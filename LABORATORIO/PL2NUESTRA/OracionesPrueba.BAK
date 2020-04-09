@@ -1,0 +1,89 @@
+% Author:
+% Date: 09/04/2020
+
+
+:-consult('DiccionarioIngles.pl').
+:-consult('DiccionarioEspannol.pl').
+:-consult('GramaticaEspannol.pl').
+:-consult('GramaticaIngles.pl').
+:-consult('draw.pl').
+
+
+%PARA EJECUTAR, INTRODUCIR PARA CADA ORACION EN LA CONSOLA LO SIGUIENTE
+
+%Perfecta
+%1. El hombre come una manzana
+%oracion(X,[el, hombre, come, una, manzana],[]),sentence(X,Ingles,[]).
+%sentence(X,[the,man,eats,an,apple],[]),oracion(X,Espanol,[]).
+
+%Perfecta, revisar arbol
+%2.  Ellos comen manzanas
+%oracion(X,[ellos, comen, manzanas],[]),sentence(X,Ingles,[]).
+%sentence(X,[they, eat, some, apples],[]),oracion(X,Espanol,[]).
+
+%Perfecta
+%3.  Tu comes una manzana roja. - You eat a red apple., bieeen
+%oracion(X,[tu,comes,una,manzana,roja],[]),sentence(X,Ingles,[]).
+%sentence(X,[you,eat,a,red,apple],[]),oracion(X,Espanol,[]).
+
+
+%Perfecta, controlar arbol
+%4.  Juan ama a Maria. - John loves Mary
+%oracion(X,[juan, ama,a,maria],[]),sentence(X,Ingles,[]).
+%sentence(X,[john,loves,mary],[]),oracion(X,Espanol,[]).
+
+%Perfecta
+%5.  El gato grande come un raton gris. The big cat eats a grey mouse.
+%oracion(X,[el,gato,grande,come,un,raton,gris],[]),sentence(X,Ingles,[]).
+%sentence(X,[the, big, cat, eats, a, grey, mouse],[]),oracion(X,Espanol,[]).
+
+
+%Perfecta, controlar arbol
+%6. Juan estudia en la universidad. - John studies at university.
+%oracion(X,[juan,estudia,en,la,universidad],[]),sentence(X,Ingles,[]).
+%sentence(X,[john,studies,at,university],[]),oracion(X,Espanol,[]).
+
+%Perfecta, controlar arbol
+%7.  El alumno ama la universidad. - The student loves university.
+%oracion(X,[el,alumno,ama,la,universidad],[]),sentence(X,Ingles,[]).
+%sentence(X,[the,student,loves,university],[]),oracion(X,Espanol,[]).
+
+%Perfecta
+%8. El perro persiguio un gato negro en el jardin. - The dog chased a black cat in the garden.
+%oracion(X,[el,perro,persiguio,un,gato,negro,en,el,jardin],[]),sentence(X,Ingles,[]).
+%sentence(X,[the, dog, chased, a, black, cat, in, the, garden],[]),oracion(X,Espanol,[]).
+
+%Perfecta
+%9.  La Universidad es grande. - The University is large.
+%oracion(X,[la, universidad, es, grande],[]),sentence(X,Ingles,[]).
+%sentence(X,[the,university,is,large],[]),oracion(X,Espanol,[]).
+
+%Perfecta, falta el arbol
+%10. El hombre que vimos ayer es mi vecino. - The man that we saw yesterday is my neighbour.
+%oracion_compuesta(X,[el,hombre,que,vimos,ayer,es,mi,vecino],[]),compound_sentence(X,Ingles,[]).
+%compound_sentence(X,[the,man,that,we,saw,yesterday,is,my,neighbour],[]),oracion_compuesta(X,Espanol,[]).
+
+%Perfecta
+%11. El canario amarillo canta muy bien. - The yellow canary sings very well.
+%oracion(X,[el,canario,amarillo,canta,muy,bien],[]),sentence(X,Ingles,[]).
+%sentence(X,[the, yellow, canary, sings, very, well],[]),oracion(X,Espanol,[]).
+
+%Perfecta
+%12.  Juan toma un cafe y lee el periodico. - John has a co?ee and reads the newspaper.
+%oracion_compuesta(X,[juan,toma,un,cafe,y,lee,el,periodico],[]),compound_sentence(X,Ingles,[]).
+%compound_sentence(X,[john, has, a, coffee, and, reads, the, newspaper],[]),oracion_compuesta(X,Espanol,[]).
+
+%Perfecta
+%13. Juan es delgado y Maria es alta. - John is thin and Mary is tall.
+%oracion_compuesta(X,[juan,es,delgado,y,maria,es,alta],[]),compound_sentence(X,Ingles,[]).
+%compound_sentence(X,[john, is,thin,and,mary,is,tall],[]),oracion_compuesta(X,Espanol,[]).
+
+%Perfecta, comprobar
+%14. Oscar Wilde escribio El Fantasma de Canterville - Oscar Wilde wrote The Canterville Ghost.
+%oracion(X,[oscar,wilde,escribio,el,fantasma,de,canterville],[]),sentence(X,Ingles,[]).
+%sentence(X,[oscar,wilde,wrote,the,canterville,ghost],[]),oracion(X,Espanol,[]).
+
+
+
+
+

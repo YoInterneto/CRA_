@@ -1,0 +1,101 @@
+% Author:
+% Date: 09/04/2020
+
+%DICCIONARIO ESPANNOL
+
+%ARTICULOS, EL SEGUNDO PARAMETRO ES PARA SABER EL GENERO
+%EL TERCER PARAMETRO SE UTILIZA PARA EL NUMERO
+%EL CUARTO PARAMETRO SE UTILIZA PARA LOS NOMBRES CONTABLES
+articulo(m(art_1),f,sg,c) --> [la].
+articulo(m(art_1),m,sg,c) --> [el].
+articulo(m(art_1),f,pl,c) --> [las].
+articulo(m(art_2),f,sg,c) --> [una].
+articulo(m(art_2),m,sg,c) --> [un].
+articulo(m(art_2),f,pl,c) --> [unas].
+articulo(m(art_2),m,pl,c) --> [unos].
+articulo(m(art_3),m,sg,c) --> [mi].
+
+%VARIABLE ESPECIAL PARA EL CASO DE LAS PREGUNTAS 6 Y 7
+articulo3(m3(art3_1),c2,e2) --> [la].
+
+%VARIABLE ESPECIAL PARA EL CASO DE LA PREGUNTA 4
+preposicion2(p2(p2_1),p) --> [a].
+
+
+%lE METEMOS OTRO PARAMETRO PARA CUANDO SE PUEDA OMITIR (o) Y CUANDO NO (no)     para la subordinada, luego vemos
+%NOMBRES, EL SEGUNDO PARAMETRO MARCA EL GENERO
+%EL TERCER PARAMETRO MARCA EL NUMERO
+%EL CUARTO PARAMETRO MARCA SI ES CONTABLE O NO (PARA UNIVERSIDAD ES UN CASO ESPECIAL, AL HABER DIVERSOS CASOS)
+%EL ULTIMO SE UTILIZA PARA SABER SI ES NOMBRE PROPIO O COMUN (PARA UNIVERSIDAD VUELVE A SER DIFERENTE)
+nombre(n(n_1),f,sg,c,e) --> [piedra].
+nombre(n(n_2),m,sg,c,e) --> [papel].
+nombre(n(n_3),f,pl,c,e) --> [tijeras].
+nombre(n(n_4),m,sg,c,e) --> [hombre].
+nombre(n(n_5),f,sg,c,e) --> [manzana].
+nombre(n(n_6),f,pl,u,e) --> [manzanas].
+nombre(n(n_7),m,pl,c,p) --> [ellos].
+nombre(n(n_8),m,sg,c,e) --> [tu].
+nombre(n(n_9),m,sg,c,p) --> [juan].
+nombre(n(n_10),f,sg,c,p) --> [maria].
+nombre(n(n_11),m,sg,c,e) --> [gato].
+nombre(n(n_12),m,sg,c,e) --> [raton].
+nombre(n(n_13),f,sg,c2,e2) --> [universidad].
+nombre(n(n_14),m,sg,c,e) --> [alumno].
+nombre(n(n_15),m,sg,c,e) --> [perro].
+nombre(n(n_16),m,sg,c,e) --> [jardin].
+nombre(n(n_17),m,pl,c,so) --> [nosotros].
+nombre(n(n_18),m,sg,c,e) --> [vecino].
+nombre(n(n_19),m,sg,c,e) --> [canario].
+nombre(n(n_20),m,sg,c,e) --> [cafe].
+nombre(n(n_21),m,sg,c,e) --> [periodico].
+nombre(n(n_22),m,sg,c,e) --> [oscar,wilde].
+%nombre(n(n_23),m,sg,c,p) --> [wilde].
+nombre(n(n_24),m,sg,c,e) --> [fantasma,de,canterville].
+%nombre(n(n_25),m,sg,c,p) --> [canterville].
+
+
+%VERBOS, EL SEGUNDO PARAMETRO MARCA EL NUMERO
+%EL TERCER PARAMETRO MARCA SI ES TRANSITIVO O NO, PARA SABER SI DESPUES VA PREPOSICION (SOLO SE UTILIZA PARA LA PREGUNTA 4)
+verbo(v(v_1),sg,i) --> [corta].
+verbo(v(v_2),sg,i) --> [envuelve].
+verbo(v(v_3),sg,i) --> [rompe].
+verbo(v(v_4),sg,i) --> [come].
+verbo(v(v_6),sg,i) --> [comes].
+verbo(v(v_7),sg,t) --> [ama].
+verbo(v(v_8),sg,i) --> [estudia].
+verbo(v(v_9),sg,i) --> [persiguio].
+verbo(v(v_10),sg,i) --> [es].
+verbo(v(v_11),sg,i) --> [canta].
+verbo(v(v_12),sg,i) --> [toma].
+verbo(v(v_13),sg,i) --> [lee].
+verbo(v(v_14),sg,i) --> [escribio].
+
+verbo(v(v_1),pl,i) --> [cortan].
+verbo(v(v_2),pl,i) --> [envuelven].
+verbo(v(v_3),pl,i) --> [rompen].
+verbo(v(v_4),pl,i) --> [comen].
+verbo(v(v_15),pl,i) --> [vimos].
+
+%ADJETIVOS, GENERO Y NUMERO
+adjetivo(a(a_1),f,sg) --> [roja].
+adjetivo(a(a_2),m,sg) --> [gris].
+adjetivo(a(a_3),m,sg) --> [grande].
+adjetivo(a(a_4),m,sg) --> [negro].
+adjetivo(a(a_5),m,sg) --> [amarillo].
+adjetivo(a(a_6),m,sg) --> [delgado].
+adjetivo(a(a_7),f,sg) --> [alta].
+
+
+%ADVERBIOS, SE DENOMINA CON B PARA DISNTIGUIRLOS DE LOS ADJETIVOS
+adverbio(b(b_1)) --> [ayer].
+adverbio(b(b_2)) --> [bien].
+adverbio(b(b_3)) --> [muy].
+
+%PRONOMBRES, SE USA Y PARA DISTINGUIRLOS DE PREPOSICION (P)
+pronombre(y(y_1)) --> [que].
+
+%PREPOSICIONES
+preposicion(p(p_1)) --> [en].
+
+%CONUNCION (NEXO), PARA LAS COORDINADAS
+conjuncion(c(c_1))--> [y].

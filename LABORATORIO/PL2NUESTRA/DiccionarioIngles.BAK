@@ -1,0 +1,100 @@
+% Author:
+% Date: 09/04/2020
+
+%DICCIONARIO INGLES
+
+%ARTICULOS, EL SEGUNDO PARAMETRO ES PARA SABER SI SE USA PARA PALABRAS QUE EMPIECEN POR VOCAL O CONSONANTE
+modifier(m(art_1),c) --> [the].
+modifier(m(art_1),v) --> [the].
+modifier(m(art_2),c) --> [a].
+modifier(m(art_2),v) --> [an].
+modifier(m(art_3),v) --> [my].
+modifier(m(art_3),c) --> [my].
+
+%ARTICULO ESPECIAL PARA LA ORACION 2
+modifier2(m2(art2_1)) --> [some].
+
+
+%NOMBRES, EL SEGUNDO PARAMETRO ES PARA SABER SI ES PLURAL O SINGULAR
+%EL TERCER PARAMETRO ES PARA SABER SI EMPIEZA POR VOCAL O CONSONANTE
+%EL CUARTO PARAMETRO ES PARA SABER SI SU PREPOSICION DEBE SER IN,ON O AT
+%EL QUINTO PARAMETRO ES PARA SABER SI SU ADJETIVO DEBE SER LARGE O BIG
+%EL SEXTO PARAMETRO ES PARA SABER SI ES CONTABLE O NO (PARA UNIVERSIDAD ES UN CASO ESPECIAL AL HABER DISNTINTOS CASOS DE ORACIONES EN LOS QUE APARECE)
+noun(n(n_1),sg,c,o,b,co) --> [stone].
+noun(n(n_2),sg,c,o,b,co) --> [paper].
+noun(n(n_3),pl,c,o,b,co) --> [scissors].
+noun(n(n_4),sg,c,i,b,co) --> [man].
+noun(n(n_5),sg,v,i,b,co) --> [apple].
+noun(n(n_6),pl,v,i,b,u) --> [apples].
+noun(n(n_7),pl,c,i,b,co) --> [they].
+noun(n(n_8),sg,c,i,b,co) --> [you].
+noun(n(n_9),sg,c,i,b,co) --> [john].
+noun(n(n_10),sg,c,i,b,co) --> [mary].
+noun(n(n_11),sg,c,i,b,co) --> [cat].
+noun(n(n_12),sg,c,i,b,co) --> [mouse].
+noun(n(n_13),sg,v,a,l,a) --> [university].
+noun(n(n_14),sg,c,i,b,co) --> [student].
+noun(n(n_15),sg,c,i,b,co) --> [dog].
+noun(n(n_16),sg,c,i,l,co) --> [garden].
+noun(n(n_17),pl,c,i,b,co) --> [we].
+noun(n(n_18),sg,c,i,b,co) --> [neighbour].
+noun(n(n_19),sg,c,i,b,co) --> [canary].
+noun(n(n_20),sg,c,i,b,co) --> [coffee].
+noun(n(n_21),sg,c,i,b,co) --> [newspaper].
+noun(n(n_22),sg,c,i,b,co) --> [oscar,wilde].
+%noun(n(n_23),sg,c,i,b,co) --> [wilde].
+noun(n(n_24),sg,c,i,b,co) --> [canterville, ghost].
+%noun(n(n_25),sg,c,i,b,co) --> [canterville].
+
+
+
+
+%VERBOS, EL SEGUNDO PARAMETRO ES PARA SABER SI ES PLURAL O SINGULAR
+verb(v(v_1),sg) --> [cuts].
+verb(v(v_2),sg) --> [wraps].
+verb(v(v_3),sg) --> [breaks].
+verb(v(v_4),sg) --> [eats].
+verb(v(v_5),sg) --> [eat].
+verb(v(v_6),sg) --> [eat].
+verb(v(v_7),sg) --> [loves].
+verb(v(v_8),sg) --> [studies].
+verb(v(v_9),sg) --> [chased].
+verb(v(v_10),sg) --> [is].
+verb(v(v_11),sg) --> [sings].
+verb(v(v_12),sg) --> [has].
+verb(v(v_13),sg) --> [reads].
+verb(v(v_14),sg) --> [wrote].
+
+verb(v(v_1),pl) --> [cut].
+verb(v(v_2),pl) --> [wrap].
+verb(v(v_3),pl) --> [break].
+verb(v(v_4),pl) --> [eat].
+verb(v(v_15),pl) --> [saw].
+
+
+%ADJETIVOS, EL SEGUNDO PARAMETRO ES PARA SABER SI EMPEZA POR VOCAL O CONSONANTE
+%EL TERCER PARAMETRO ES PARA CUANDO ES PARA ESPACIOS (L) O PARA ANIMALES U OBJETOS (B), REALMENTE SOLO SE USA PARA DISNTINGUIR LARGE DE BIG
+adjective(a(a_1),c,b)  --> [red].
+adjective(a(a_2),c,b)  --> [grey].
+adjective(a(a_3),c,b)  --> [big].
+adjective(a(a_3),c,l)  --> [large].
+adjective(a(a_4),c,b)  --> [black].
+adjective(a(a_5),c,b)  --> [yellow].
+adjective(a(a_6),c,b)  --> [thin].
+adjective(a(a_7),c,b)  --> [tall].
+
+%ADVERBIOS, SE DENOMINA CON B PARA DISNTIGUIRLOS DE LOS ADJETIVOS
+adverb(b(b_1)) --> [yesterday].
+adverb(b(b_2)) --> [well].
+adverb(b(b_3)) --> [very].
+
+%PRONOMBRES, SE USA Y PARA DISTINGUIRLOS DE PREPOSICION (P)
+pronoun(y(y_1)) --> [that].
+
+%PREPOSICIONES, EL SEGUNDO PARAMETRO ES PARA SABER SI EL NOMBRE AL QUE ACOMPAÑAN NECESITA AT, IN U ON
+preposition(p(p_1),a) --> [at].
+preposition(p(p_1),i) --> [in].
+preposition(p(p_1),o) --> [on].
+
+%CONUNCION (NEXO)
+conjunction(c(c_1))--> [and].

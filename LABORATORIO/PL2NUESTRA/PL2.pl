@@ -480,15 +480,8 @@ conjuncion(c(c_1))--> [y].
 
 %Perfecta, falta el arbol
 %10. El hombre que vimos ayer es mi vecino. - The man that we saw yesterday is my neighbour.
-%oracion(X,[el,hombre,que,vimos,ayer,es,mi,vecino],[]),sentence(X,Ingles,[]).
-%sentence(X,[the,man,that,we,saw,yesterday,is,my,neighbour],[]),oracion(X,Espanol,[]).
-
-
 %oracion_compuesta(X,[el,hombre,que,vimos,ayer,es,mi,vecino],[]),compound_sentence(X,Ingles,[]).
 %compound_sentence(X,[the,man,that,we,saw,yesterday,is,my,neighbour],[]),oracion_compuesta(X,Espanol,[]).
-
-%oracion(X,[vimos,una,manzana],[]),sentence(X,Ingles,[]).
-%sentence(X,[we,saw,an,apple],[]),oracion(X,Espanol,[]).
 
 %Perfecta
 %11. El canario amarillo canta muy bien. - The yellow canary sings very well.
