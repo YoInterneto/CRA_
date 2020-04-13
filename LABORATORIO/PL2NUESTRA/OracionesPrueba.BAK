@@ -8,6 +8,7 @@
 :-consult('GramaticaIngles.pl').
 :-consult('draw.pl').
 
+oracion1 --> [el, hombre, come, una, manzana].
 
 %PARA EJECUTAR, INTRODUCIR PARA CADA ORACION EN LA CONSOLA LO SIGUIENTE
 

@@ -1,0 +1,56 @@
+% Author:
+% Date: 09/04/2020
+
+
+:-consult('DiccionarioIngles.pl').
+:-consult('DiccionarioEspannol.pl').
+:-consult('GramaticaEspannol.pl').
+:-consult('GramaticaIngles.pl').
+:-consult('draw.pl').
+
+oracion1:write(-oracion(X,[el, hombre, come, una, manzana],[]),sentence(X,Ingles,[])).
+sentence1:-sentence(X,[the,man,eats,an,apple],[]),oracion(X,Espanol,[]).
+
+oracion2:-oracion(X,[ellos, comen, manzanas],[]),sentence(X,Ingles,[]).
+sentence2:-sentence(X,[they, eat, some, apples],[]),oracion(X,Espanol,[]).
+
+oracion3:-oracion(X,[tu,comes,una,manzana,roja],[]),sentence(X,Ingles,[]).
+sentence3:-sentence(X,[you,eat,a,red,apple],[]),oracion(X,Espanol,[]).
+
+oracion4:-oracion(X,[juan, ama,a,maria],[]),sentence(X,Ingles,[]).
+sentence4:-sentence(X,[john,loves,mary],[]),oracion(X,Espanol,[]).
+
+oracion5:-oracion(X,[el,gato,grande,come,un,raton,gris],[]),sentence(X,Ingles,[]).
+sentence5:-sentence(X,[the, big, cat, eats, a, grey, mouse],[]),oracion(X,Espanol,[]).
+
+oracion6:-oracion(X,[juan,estudia,en,la,universidad],[]),sentence(X,Ingles,[]).
+sentence6:-sentence(X,[john,studies,at,university],[]),oracion(X,Espanol,[]).
+
+oracion7:-oracion(X,[el,alumno,ama,la,universidad],[]),sentence(X,Ingles,[]).
+sentence7:-sentence(X,[the,student,loves,university],[]),oracion(X,Espanol,[]).
+
+oracion8:-oracion(X,[el,perro,persiguio,un,gato,negro,en,el,jardin],[]),sentence(X,Ingles,[]).
+sentence8:-sentence(X,[the, dog, chased, a, black, cat, in, the, garden],[]),oracion(X,Espanol,[]).
+
+oracion9:-oracion(X,[la, universidad, es, grande],[]),sentence(X,Ingles,[]).
+sentence9:-sentence(X,[the,university,is,large],[]),oracion(X,Espanol,[]).
+
+oracion10:-oracion_compuesta(X,[el,hombre,que,vimos,ayer,es,mi,vecino],[]),compound_sentence(X,Ingles,[]).
+sentence10:-compound_sentence(X,[the,man,that,we,saw,yesterday,is,my,neighbour],[]),oracion_compuesta(X,Espanol,[]).
+
+oracion11:-oracion(X,[el,canario,amarillo,canta,muy,bien],[]),sentence(X,Ingles,[]).
+sentence11:-sentence(X,[the, yellow, canary, sings, very, well],[]),oracion(X,Espanol,[]).
+
+oracion12:-oracion_compuesta(X,[juan,toma,un,cafe,y,lee,el,periodico],[]),compound_sentence(X,Ingles,[]).
+sentence12:-compound_sentence(X,[john, has, a, coffee, and, reads, the, newspaper],[]),oracion_compuesta(X,Espanol,[]).
+
+oracion13:-oracion_compuesta(X,[juan,es,delgado,y,maria,es,alta],[]),compound_sentence(X,Ingles,[]).
+sentence13:-compound_sentence(X,[john, is,thin,and,mary,is,tall],[]),oracion_compuesta(X,Espanol,[]).
+
+oracion14:-oracion(X,[oscar,wilde,escribio,el,fantasma,de,canterville],[]),sentence(X,Ingles,[]).
+sentence14:-sentence(X,[oscar,wilde,wrote,the,canterville,ghost],[]),oracion(X,Espanol,[]).
+
+
+
+
+
