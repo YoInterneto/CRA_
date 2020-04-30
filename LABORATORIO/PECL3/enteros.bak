@@ -342,9 +342,6 @@
 
 (define veinte ((par vingt) zero))
 
-;;;;;;;;;;;;
-(define dostercios ((cocientenat deux) trois))
-
 ;;;;; Orden, valor absoluto y tests de nulidad, positividad y negatividad. 
 ;;;
 ;;; m-n > m'-n' si y solo si m+n' > m'+n e igual con el resto
@@ -475,10 +472,6 @@
                  (lambda (s)
                    ((cocienteent ((prodent r) s)) ((mcdent r) s)))))
 
-
-
-;--------------------------------------------------------------
-
 ;;;;matrices
 
 (define testmatrices (lambda (m)
@@ -559,8 +552,7 @@
 ; Suma de enteros ----> (testenteros(((suma_p cinco)tres)tres))
 (define suma_p (lambda (x)
                  (lambda (y)
-                   (lambda (z)
-                     ((reduccion ((sument x) y))z)))))
+                     ((sument x) y))))
 
 ; Resta de enteros ----> (testenteros(((resta_p cinco)tres)tres))
 (define resta_p (lambda (x)

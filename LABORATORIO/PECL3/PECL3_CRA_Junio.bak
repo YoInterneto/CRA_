@@ -1,3 +1,4 @@
+
 ; Booleanos. Son los únicos lambda términos no currificados.
 
 (define true (lambda (x y) x))
@@ -342,9 +343,6 @@
 
 (define veinte ((par vingt) zero))
 
-;;;;;;;;;;;;
-(define dostercios ((cocientenat deux) trois))
-
 ;;;;; Orden, valor absoluto y tests de nulidad, positividad y negatividad. 
 ;;;
 ;;; m-n > m'-n' si y solo si m+n' > m'+n e igual con el resto
@@ -476,8 +474,6 @@
                    ((cocienteent ((prodent r) s)) ((mcdent r) s)))))
 
 
-
-;--------------------------------------------------------------
 
 ;;;;matrices
 
@@ -721,7 +717,3 @@
                               (lambda (no_use2)
                                    (((prod_matrices matriz) ((f matriz) ((restanat expo)un)))mod)
                                 ))zero)))zero)))))m)e)))))
-
-
-
-

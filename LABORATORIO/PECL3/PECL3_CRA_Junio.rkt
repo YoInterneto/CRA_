@@ -555,8 +555,7 @@
 ; Suma de enteros ----> (testenteros(((suma_p cinco)tres)tres))
 (define suma_p (lambda (x)
                  (lambda (y)
-                   (lambda (z)
-                     ((reduccion ((sument x) y))z)))))
+                     ((sument x) y))))
 
 ; Resta de enteros ----> (testenteros(((resta_p cinco)tres)tres))
 (define resta_p (lambda (x)
