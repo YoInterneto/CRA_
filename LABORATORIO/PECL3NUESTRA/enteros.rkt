@@ -720,8 +720,6 @@
                             (neg (escero_racional r))))
 
 
- 
-
 
 ;Inversibilidad
 ;Si no es cero, la matriz tendra inversa
@@ -729,7 +727,6 @@
                        ((noescero_racional (determinante m)) "tiene inversa" "no tiene inversa")))
 
 ;Inversa
-
 ;Funcion que usaremos para dividir a toda la matriz por el determinante
 ;Multiplica a toda la matriz por la inversa de un racional, es decir, divide a cada elemento de la matriz entre el racional dado
 (define division_matriz_racional (lambda (m) 
@@ -737,12 +734,13 @@
                                      ((par ((par ((prod_racionales (primero (primero m))) (inverso_racionales r)))((prod_racionales (segundo (primero m))) (inverso_racionales r))))
                                       ((par ((prod_racionales (primero (segundo m))) (inverso_racionales r)))((prod_racionales (segundo (segundo m))) (inverso_racionales r)))))))
 
-;(test_matriz ((division_matriz_racional matriz_prueba1) unmedio))
+
 ;Adjunta
 ;Se intercambia por el valor de eliminar filas y columnas y multiplicar por -1 en las posiciones impares
 (define adjunta_matriz (lambda(m)
                          ((par ((par (rep_canonico_racionales(segundo (segundo m)))) ((prod_racionales (primero (segundo m))) -unouno)))
                           ((par ((prod_racionales (segundo (primero m))) -unouno)) (rep_canonico_racionales(primero (primero m)))))))
+
 
 ;(test_matriz (adjunta_matriz matriz_prueba1))
 ;Traspuesta
@@ -751,7 +749,6 @@
                             ((par ((par (rep_canonico_racionales(primero (primero m)))) (rep_canonico_racionales(primero (segundo m)))))
                           ((par (rep_canonico_racionales(segundo (primero m)))) (rep_canonico_racionales(segundo (segundo m)))))))
 
-;(test_matriz (traspuesta_matriz matriz_prueba1))
 
 ;Inversa
 ;Adjunta de la traspuesta entre el determinante
@@ -771,7 +768,7 @@
 (define cuadrado_matrices (lambda (m)
                           ((prod_matrices m)m)))
 
-;Potencia matriz
+
 ;Potencia matriz
 ;Hay que utilizar el combinador de punto fijo
 ;Se usa el metodo de exponenciacion binaria, donde si el exponente es par se le divide la mitad al exponente y se eleva al cuadrado
