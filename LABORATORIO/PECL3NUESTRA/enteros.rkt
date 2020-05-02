@@ -765,9 +765,43 @@
 (define rango (lambda (m)
                      ((noescero_racional (determinante m)) dos uno)))
 
+;d)
+
+;Cuadrado
+(define cuadrado_matrices (lambda (m)
+                          ((prod_matrices m)m)))
+
+;Potencia matriz
+;Potencia matriz
+;Hay que utilizar el combinador de punto fijo
+;Se usa el metodo de exponenciacion binaria, donde si el exponente es par se le divide la mitad al exponente y se eleva al cuadrado
+;Si es impar, se le resta 1 al exponente
+;En el momento que el exponente es igual a 1 devuelve la matriz
+;Se usan numeros naturales porque la funcion par? solo se usa para numeros naturales
+(define potencia_matrices 
+  (lambda (m)
+        (lambda (e)
+            (((Y (lambda (f)
+                   (lambda (matriz)
+                     (lambda(expo)
+                      ((((esigualnat expo)un)  
+                      (lambda (no_use)
+                            matriz) 
+                       (lambda (no_use)
+                            (((par? expo)
+                              (lambda (no_use2)
+                                   ((f ((prod_matrices matriz)matriz)) ((cocientenat expo)deux))
+                                )
+                              (lambda (no_use2)
+                                   ((prod_matrices matriz) ((f matriz) ((restanat expo)un)))
+                                ))zero)))zero)))))m)e))))
 
 
 
+
+ 
+ 
+ 
 
 
 
@@ -781,6 +815,7 @@
 ;Test determinante
 ;(test_racionales (determinante matriz_prueba1))
 ;(test_racionales (determinante matriz_prueba4))
+;(test_racionales (determinante matriz_prueba2))
 
 ;Test inversibilidad
 ;(inversa? matriz_prueba1)
@@ -793,6 +828,14 @@
 ;Test rango
 ;(testenteros (rango matriz_prueba1))
 
+;Test cuadrado
+;(test_matriz (cuadrado_matriz matriz_prueba1))
+;(test_matriz (cuadrado_matrices matriz_prueba1))
+
+;Test potencia
+;(test_matriz ((potencia_matrices matriz_prueba3) cinq))
+;(test_matriz ((potencia_matrices matriz_prueba3) trois))
+;(test_matriz ((potencia_matrices identidad) cinq))
 
 
  

@@ -1,4 +1,3 @@
-
 ; Booleanos. Son los únicos lambda términos no currificados.
 
 (define true (lambda (x y) x))
@@ -28,7 +27,7 @@
     ((lambda (x) (f (lambda (v) ((x x) v))))
      (lambda (x) (f (lambda (v) ((x x) v)))))))
 
-;;;;;; Orden en naturales y test de nulidad
+;;;;;; Orden en naturales y test de nulidad 
 
 (define esmenoroigualnat (lambda (n)
                              (lambda (m)
@@ -343,6 +342,9 @@
 
 (define veinte ((par vingt) zero))
 
+;;;;;;;;;;;;
+(define dostercios ((cocientenat deux) trois))
+
 ;;;;; Orden, valor absoluto y tests de nulidad, positividad y negatividad. 
 ;;;
 ;;; m-n > m'-n' si y solo si m+n' > m'+n e igual con el resto
@@ -475,244 +477,330 @@
 
 
 
-;;;;matrices
+;--------------------------------------------------------------
 
-(define testmatrices (lambda (m)
-                        (list (list (testenteros (primero (primero m))) (testenteros (segundo (primero m))))
-                              (list (testenteros (primero (segundo m))) (testenteros (segundo (segundo m))))
-                        )
-                      )
-)
+;Definicion de racionales
+(define unmedio ((par uno) dos))
+(define tresmedios ((par tres) dos))
+(define dostercios ((par dos) tres))
+(define trescuartos ((par tres) cuatro))
+(define untercio ((par uno) tres))
+(define unquinto ((par uno) cinco))
+(define dosquintos ((par dos) cinco))
+(define cincosextos ((par cinco) seis))
+(define uncuarto ((par uno) cuatro))
+(define cincoseptimos ((par cinco) siete))
+(define doscuartos ((par dos) cuatro))
+(define tressextos ((par tres) seis))
+(define cincodecimos ((par cinco) diez))
+(define dosmedios ((par dos) dos))
+(define tresnovenos ((par tres) nueve))
+(define -unouno ((par -uno) uno))
 
 
 
-(define matriz (lambda (a)
+
+
+(define test_racionales (lambda(r)
+                    (list(testenteros (primero r))(testenteros (segundo r)))))
+
+
+
+
+;a) Representante canonico 
+
+(define rep_canonico_racionales (lambda (r)
+                         ((par ((cocienteent (primero r) ) ((mcdent (primero r)) (segundo r)) ))
+                          ((cocienteent (segundo r) ) ((mcdent (primero r)) (segundo r)) ))))
+
+
+;b)
+;Suma
+;Se halla el mcm de los denominadores, despues se hace la division del mcm con cada denominador y se multiplica a cada numerador. Despues se suman los numeradores y se deja el mcm como denominador
+;Despues de la suma se aplica el representante canonico para hacer la fraccion irreducible
+;Por ejemplo, 1/2 + 2/3 --> mcm(2,3)=6, por lo tanto 6/2=3, 3*1=3 y 6/3=2, 2*2=4 por lo tanto se suman 3+4=7 (numerador) y el denominador es 6
+
+(define suma_racionales  (lambda (r1)
+                   (lambda(r2)
+                      (rep_canonico_racionales ((par ((sument
+                              ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r1))) (primero r1)))
+                             ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r2))) (primero r2))))
+                       ((mcment (segundo r1)) (segundo r2)))))))
+
+;Producto
+;Se multiplican los numeradores y los denaminadores y se hace el representante canonico
+(define prod_racionales  (lambda (r1)
+                   (lambda(r2)
+                      (rep_canonico_racionales ((par ((prodent (primero r1)) (primero r2))) ((prodent (segundo r1)) (segundo r2)))))))
+
+;Resta
+;Lo mismo que la suma pero aplicando resta
+(define resta_racionales  (lambda (r1)
+                   (lambda(r2)
+                      (rep_canonico_racionales ((par ((restaent
+                              ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r1))) (primero r1)))
+                             ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r2))) (primero r2))))
+                       ((mcment (segundo r1)) (segundo r2)))))))
+
+;Inversa
+;Se intercambian el numerador y el denominador
+(define inverso_racionales  (lambda (r)
+                         (rep_canonico_racionales ((par (segundo r)) (primero r)))))
+
+
+;c)
+;Mayor o igual
+;Hacemos el mcd de los dos numeros (aplicamos el mismo procedimiento que en la suma) y comparamos el numerador
+(define mayor_igual_racional? (lambda (r1)
+                               (lambda (r2)
+                                  (((esmayoroigualent
+                                     ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r1))) (primero r1)))
+                                    ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r2))) (primero r2))) "mayor o igual" "menor"))))
+
+;Mayor
+(define mayor_racional? (lambda (r1)
+                               (lambda (r2)
+                                  (((esmayorent
+                                     ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r1))) (primero r1)))
+                                    ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r2))) (primero r2))) "mayor" "menor o igual"))))
+
+;Menor o igual
+(define menor_igual_racional? (lambda (r1)
+                               (lambda (r2)
+                                  (((esmenoroigualent
+                                     ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r1))) (primero r1)))
+                                    ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r2))) (primero r2))) "menor o igual" "mayor"))))
+
+;Menor
+
+(define menor_racional? (lambda (r1)
+                               (lambda (r2)
+                                  (((esmenorent
+                                     ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r1))) (primero r1)))
+                                    ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r2))) (primero r2))) "menor" "mayor o igual"))))
+
+;Igual
+(define iguales_racional? (lambda (r1)
+                               (lambda (r2)
+                                  (((esigualent
+                                     ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r1))) (primero r1)))
+                                    ((prodent ((cocienteent ((mcment (segundo r1)) (segundo r2))) (segundo r2))) (primero r2))) "iguales" "diferentes"))))
+
+
+
+;Test representante canonico
+;(test_racionales (rep_canonico_racionales cincodecimos))
+
+;Test suma racionales
+;(test_racionales  ((suma_racionales unmedio) dosmedios))
+;(test_racionales  ((suma_racionales unmedio) dostercios))
+
+;Test producto racionales
+;(test_racionales  ((prod_racionales unmedio) dostercios))
+;(test_racionales  ((prod_racionales cincodecimos) tressextos))
+;(test_racionales  ((prod_racionales untercio) cincosextos))
+
+;Test resta racionales
+;(test_racionales  ((resta_racionales unmedio) dosmedios))
+;(test_racionales  ((resta_racionales unmedio) dostercios))
+;(test_racionales  ((resta_racionales cincoseptimos) dostercios))
+
+;Test inversa
+;(test_racionales (inverso_racionales cincodecimos))
+;(test_racionales (inverso_racionales tresnovenos))
+;(test_racionales (inverso_racionales untercio))
+
+;Test mayor o igual
+;((mayor_igual_racional? unmedio) dostercios)
+;((mayor_igual_racional? trescuartos) dostercios)
+;((mayor_igual_racional? unmedio) trescuartos)
+;((mayor_igual_racional? dosmedios) dostercios)
+;((mayor_igual_racional? unmedio) cincodecimos)
+
+;Test mayor
+;((mayor_racional? unmedio) dostercios)
+;((mayor_racional? trescuartos) dostercios)
+;((mayor_racional? unmedio) trescuartos)
+;((mayor_racional? dosmedios) dostercios)
+;((mayor_racional? unmedio) cincodecimos)
+
+;Test menor o igual
+;((menor_igual_racional? unmedio) dostercios)
+;((menor_igual_racional? trescuartos) dostercios)
+;((menor_igual_racional? unmedio) trescuartos)
+;((menor_igual_racional? dosmedios) dostercios)
+;((menor_igual_racional? unmedio) cincodecimos)
+
+;Test menor
+;((menor_racional? unmedio) dostercios)
+;((menor_racional? trescuartos) dostercios)
+;((menor_racional? unmedio) trescuartos)
+;((menor_racional? dosmedios) dostercios)
+;((menor_racional? unmedio) cincodecimos)
+
+;Test igual
+;((iguales_racional? unmedio) dostercios)
+;((iguales_racional? trescuartos) dostercios)
+;((iguales_racional? unmedio) trescuartos)
+;((iguales_racional? dosmedios) dostercios)
+;((iguales_racional? unmedio) cincodecimos)
+
+
+
+
+;MATRICES RACIONALES
+
+(define definir_matriz (lambda (a)
                          (lambda (b)
                            (lambda (c)
                              (lambda (d)
                                ((par ((par a) b)) ((par c) d)))))))
 
 
-(define identidad ((((matriz uno) cero) cero) uno))
-
-(define matriz_nula ((((matriz cero) cero) cero) cero))
-
-(define matriz_prueba1 ((((matriz dos) cuatro) -uno) cinco))
-
-(define matriz_prueba2 ((((matriz uno) dos) dos) tres))
-
-(define matriz_prueba3 ((((matriz dos) uno) -tres) dos))
-
-(define matriz_prueba4 ((((matriz uno) -tres) cero) cuatro))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PECL3 Conocimiento y razonamiento automatizado ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;vectores
-
-(define testvectores (lambda (m)
-                        (list (testenteros (primero m)) (testenteros (segundo m)))
-                              
+(define test_matriz (lambda (m)
+                        (list (list (test_racionales (primero (primero m))) (test_racionales (segundo (primero m))))
+                              (list (test_racionales (primero (segundo m))) (test_racionales (segundo (segundo m))))
                         )
                       )
-
-
-
-
-(define vectores (lambda (a)
-                         (lambda (b)
-                              ((par a) b))))
-
-
-(define vector_prueba1 ((vectores dos) cuatro))
-
-(define vector_prueba2 ((vectores uno) dos))
-
-(define vector_prueba3 ((vectores dos) uno))
-
-(define vector_prueba4 ((vectores uno) -tres))
-
-;;;;;;;; condiconal if ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define if (lambda (p x y) (p x y)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Parte de los numeros enteros ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;; a) Reduccion a representante canónico;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; Reduccion a representante canónico ----> (testenteros((reduccion cinco)tres))
-(define reduccion (lambda (x)
-                    (lambda (y)
-                       ((restoent x) y)))) 
-                                   
-
-
-;;;;;; b) Aritmética de enteros ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; Suma de enteros ----> (testenteros(((suma_p cinco)tres)tres))
-(define suma_p (lambda (x)
-                 (lambda (y)
-                     ((sument x) y))))
-
-; Resta de enteros ----> (testenteros(((resta_p cinco)tres)tres))
-(define resta_p (lambda (x)
-                 (lambda (y)
-                   (lambda (z)
-                     ((reduccion ((restaent x) y))z)))))                 
-
-
-; Producto de enteros ----> (testenteros(((prod_p cinco)tres)tres))
-(define prod_p (lambda (x)
-                 (lambda (y)
-                   (lambda (z)
-                     ((reduccion ((prodent x) y))z)))))
-
-
-
-
-
-;;;;;;; c) Decisión de inversibilidad y calculo de inversa;;;;;;;;;;;;;;;;;;
-
-; Decision de inversibilidad ----> ((inversible?_p cinco)tres)
-(define inversible?_p (lambda (x)
-                        (lambda (y)
-                          ((esigualent((mcdent x) y))uno))))
-
-; Calculo de la inversa del entero ----> (testenteros((inversa_ent cinco) nueve))
-(define inversa_ent
-    (lambda (a)
-        (lambda (b)
-            ((Y (lambda (f)
-                (lambda (y)
-                    (((neg((esigualent((mcdent a)b))uno))
-                        (lambda (no_use)
-                            cero
-                        )
-                        (lambda (no_use)
-                          ((((esigualent (((prod_p y) a) b))uno)
-                           (lambda (no_use1)
-                             y)
-                           (lambda (no_use1)
-                             (f ((sument y) uno)))) cero)
-                        )
-                    )
-                        cero)
-                )
-            ))
-                zero)
-        )
-    )
 )
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Parte de las matrices ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;; a) Suma y producto de matrices ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; Suma de matrices ----> (testmatrices(((suma_matrices matriz_prueba1) matriz_prueba2) tres))
-(define suma_matrices (lambda (x)
-                        (lambda(y)
-                          (lambda(z)
-                            ((par ((par (((suma_p (primero (primero x)))(primero(primero y)))z)) (((suma_p (segundo (primero x)))(segundo(primero y)))z)))
-                             ((par (((suma_p (primero (segundo x)))(primero(segundo y)))z)) (((suma_p (segundo (segundo x)))(segundo(segundo y)))z)))))))
-
-; Resta de matrices ----> (testmatrices(((resta_matrices matriz_prueba1) matriz_prueba2) tres))
-(define resta_matrices (lambda (x)
-                        (lambda(y)
-                          (lambda(z)
-                            ((par ((par (((resta_p (primero (primero x)))(primero(primero y)))z)) (((resta_p (segundo (primero x)))(segundo(primero y)))z)))
-                             ((par (((resta_p (primero (segundo x)))(primero(segundo y)))z)) (((resta_p (segundo (segundo x)))(segundo(segundo y)))z)))))))
+;Definicion matrices
+(define identidad ((((definir_matriz ((par uno) uno)) ((par cero) uno)) ((par cero) uno)) ((par uno) uno)))
+(define matriz_nula ((((definir_matriz ((par cero) uno)) ((par cero) uno)) ((par cero) uno)) ((par cero) uno)))
+(define matriz_prueba1 ((((definir_matriz ((par dos) cuatro)) ((par cuatro) cuatro)) ((par -uno) cuatro)) ((par cinco) cuatro)))
+(define matriz_prueba2 ((((definir_matriz ((par uno) cuatro))   ((par -cuatro) seis))     ((par dos) ocho)) ((par -dos) tres)))
+(define matriz_prueba3 ((((definir_matriz ((par uno) dos))   ((par -cuatro) dos))     ((par dos) dos)) ((par -tres) dos)))
+(define matriz_prueba4 ((((definir_matriz ((par cero) dos))   ((par cero) dos))     ((par dos) dos)) ((par -tres) dos)))
 
 
 
-; Producto de una matriz por otra matriz ----> (testmatrices(((prod_matrices matriz_prueba1) matriz_prueba2) tres))
-(define prod_matrices (lambda (x)
-                        (lambda(y)
-                          (lambda(z)
-                            ((par ((par (((suma_p ((prodent(primero (primero x)))(primero(primero y))))((prodent(segundo (primero x)))(primero(segundo y))))z))
-                                   (((suma_p ((prodent(primero (primero x)))(segundo(primero y))))((prodent(segundo (primero x)))(segundo(segundo y))))z)))
-                             ((par (((suma_p ((prodent(primero (segundo x)))(primero(primero y))))((prodent(segundo (segundo x)))(primero(segundo y))))z))
-                                   (((suma_p ((prodent(primero (segundo x)))(segundo(primero y))))((prodent(segundo (segundo x)))(segundo(segundo y))))z)))))))
-
-; Producto de una matriz por un número entero ----> (testmatrices(((prod_matriz_escalar matriz_prueba1) cinco) tres))
-(define prod_matriz_escalar (lambda (x)
-                        (lambda(y)
-                          (lambda(z)
-                            ((par ((par (((prod_p (primero (primero x)))y)z)) (((prod_p (segundo (primero x)))y)z)))
-                             ((par (((prod_p (primero (segundo x)))y)z)) (((prod_p (segundo (segundo x)))y)z)))))))
-
-; Producto de una matriz por un vector ----> (testvectores(((prod_matriz_vector matriz_prueba1) vector_prueba1) tres))
-(define prod_matriz_vector (lambda (x)
-                        (lambda(y)
-                          (lambda(z)
-                            ((par (((suma_p((prodent(primero y))(primero(primero x))))((prodent(segundo y))(segundo(primero x))))z))
-                             (((suma_p((prodent(primero y))(primero(segundo x))))((prodent(segundo y))(segundo(segundo x))))z))))))
-
-;;;;;;; b) Calculo del determinante de una matriz ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; Calculo del determinante ----> (testenteros ((determinante_p matriz_prueba1)tres))
-(define determinante_p (lambda (x)
-                         (lambda (y)
-                           (((resta_p ((prodent(primero (primero x)))(segundo(segundo x))))((prodent(segundo (primero x)))(primero(segundo x))))y))))
 
 
-;;;;;;; c) Calculo y decision de la inversa, y cálculo del rango ;;;;;;;;;;;;
-(define matriz_prueba9 ((((matriz cero) cero) -uno) cero))
-; Decision de inversibilidad ----> ((inversa?_p matriz_prueba1)tres))
-(define inversa?_p (lambda (x)
-                     (lambda (y)
-                       (noesceroent ((determinante_p x) y)))))
-
-
-; Calculo de la inversa ----> (testmatrices ((inversa matriz_prueba1) tres))
-(define inversa (lambda (x)
-                  (lambda (y)
-                    (((prod_matriz_escalar (calcular_matriz x)) ((inversa_ent ((determinante_p x)y))y)) y) )))
-;Auxiliar que calcula la transpuesta y la adjunta a la vez
-(define calcular_matriz (lambda (x)
-                          ((par
-                               ((par (segundo (segundo x)))
-                                     ((prodent (segundo (primero x))) -uno)))
-                               ((par ((prodent (primero (segundo x))) -uno))   
-                                     (primero (primero x)))) ))
-
-; Calculo del rango de una matriz ----> (testenteros ((rango_p matriz_prueba1) tres))
-(define rango_p (lambda (x)
-                  (lambda(y)
-                     ((esceroent ((determinante_p x)y)) uno dos))))
-
-
-;;;;;;; d) Calculo de potencias de matrices ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; Calculo del cuadrado de una matriz ----> (testmatrices((cuadrado_matriz matriz_prueba1) tres))
-(define cuadrado_matriz (lambda (x)
-                          (lambda (y)
-                          (((prod_matrices x)x)y))))
+;a)
+;Suma
+;Se suman los de cada posicion entre si
+(define suma_matrices (lambda (m1)
+                                   (lambda(m2)
+                                     ((par ((par ((suma_racionales (primero (primero m1)))(primero(primero m2)))) ((suma_racionales (segundo (primero m1)))(segundo(primero m2)))))
+                                      ((par ((suma_racionales (primero (segundo m1)))(primero(segundo m2)))) ((suma_racionales (segundo (segundo m1)))(segundo(segundo m2))))))))
 
 
 
-; Calculo de potencia de una matriz ----> (testmatrices(((potencia_matriz matriz_prueba1)trois) tres))
-(define potencia_matriz ;;;el exponente se mete natural por que el metodo par? esta definida para naturales no paa enteros
-  (lambda (m)
-        (lambda (e)
-          (lambda (mod)
-            (((Y (lambda (f)
-                   (lambda (matriz)
-                     (lambda(expo)
-                      ((((esigualnat expo)un)  
-                       (lambda (no_use)
-                            matriz
-                        ) 
-                       (lambda (no_use)
-                            (((par? expo)
-                              (lambda (no_use2)
-                                   ((f (((prod_matrices matriz)matriz)mod)) ((cocientenat expo)deux))
-                                )
-                              (lambda (no_use2)
-                                   (((prod_matrices matriz) ((f matriz) ((restanat expo)un)))mod)
-                                ))zero)))zero)))))m)e)))))
+
+
+;Producto
+;Se multiplican las filas de la primera por las columnas de la segunda y en cada posicion se suman
+(define prod_matrices (lambda (m1)
+                        (lambda(m2)
+                            ((par ((par ((suma_racionales ((prod_racionales(primero (primero m1)))(primero(primero m2)))) ((prod_racionales(segundo (primero m1)))(primero(segundo m2)))))
+                                   ((suma_racionales ((prod_racionales(primero (primero m1)))(segundo(primero m2)))) ((prod_racionales(segundo (primero m1)))(segundo(segundo m2))))))
+                             ((par ((suma_racionales ((prod_racionales(primero (segundo m1)))(primero(primero m2)))) ((prod_racionales(segundo (segundo m1)))(primero(segundo m2)))))
+                                   ((suma_racionales ((prod_racionales(primero (segundo m1)))(segundo(primero m2)))) ((prod_racionales(segundo (segundo m1)))(segundo(segundo m2)))))))))
+
+
+
+
+
+
+
+;b)
+;Determinante
+;Se multplica en cruz y se resta. Importante: el resultado da un numero racional, no una matriz, por lo que hay que hacerlo con test_racionales
+(define determinante (lambda (m1)
+                           ((resta_racionales ((prod_racionales(primero (primero m1))) (segundo(segundo m1))))
+                            ((prod_racionales(segundo (primero m1)))(primero(segundo m1))))))
+
+
+;c)
+;Funciones que usaremos para saber cuando no es cero
+(define escero_racional (lambda (r)
+                                (esceroent (primero r))))
+
+(define noescero_racional (lambda (r)
+                            (neg (escero_racional r))))
+
+
+ 
+
+
+;Inversibilidad
+;Si no es cero, la matriz tendra inversa
+(define inversa? (lambda (m)
+                       ((noescero_racional (determinante m)) "tiene inversa" "no tiene inversa")))
+
+;Inversa
+
+;Funcion que usaremos para dividir a toda la matriz por el determinante
+;Multiplica a toda la matriz por la inversa de un racional, es decir, divide a cada elemento de la matriz entre el racional dado
+(define division_matriz_racional (lambda (m) 
+                                   (lambda(r) 
+                                     ((par ((par ((prod_racionales (primero (primero m))) (inverso_racionales r)))((prod_racionales (segundo (primero m))) (inverso_racionales r))))
+                                      ((par ((prod_racionales (primero (segundo m))) (inverso_racionales r)))((prod_racionales (segundo (segundo m))) (inverso_racionales r)))))))
+
+;(test_matriz ((division_matriz_racional matriz_prueba1) unmedio))
+;Adjunta
+;Se intercambia por el valor de eliminar filas y columnas y multiplicar por -1 en las posiciones impares
+(define adjunta_matriz (lambda(m)
+                         ((par ((par (rep_canonico_racionales(segundo (segundo m)))) ((prod_racionales (primero (segundo m))) -unouno)))
+                          ((par ((prod_racionales (segundo (primero m))) -unouno)) (rep_canonico_racionales(primero (primero m)))))))
+
+;(test_matriz (adjunta_matriz matriz_prueba1))
+;Traspuesta
+;Se intercambian filas por columnas
+(define traspuesta_matriz (lambda (m)
+                            ((par ((par (rep_canonico_racionales(primero (primero m)))) (rep_canonico_racionales(primero (segundo m)))))
+                          ((par (rep_canonico_racionales(segundo (primero m)))) (rep_canonico_racionales(segundo (segundo m)))))))
+
+;(test_matriz (traspuesta_matriz matriz_prueba1))
+
+;Inversa
+;Adjunta de la traspuesta entre el determinante
+(define inversa_matriz (lambda (m)
+                   ((division_matriz_racional(adjunta_matriz (traspuesta_matriz m))) (determinante m) )))
+
+ 
+
+;Rango
+;Si el determinante es 0, el rango es 1, si no el rango es 2. Devuelve un entero
+(define rango (lambda (m)
+                     ((noescero_racional (determinante m)) dos uno)))
+
+
+
+
+
+
+
+  
+;Test suma
+;(test_matriz ((suma_matrices matriz_prueba1) matriz_prueba2))
+
+;Test producto
+;(test_matriz ((prod_matrices matriz_prueba1) matriz_prueba2))
+
+;Test determinante
+;(test_racionales (determinante matriz_prueba1))
+;(test_racionales (determinante matriz_prueba4))
+
+;Test inversibilidad
+;(inversa? matriz_prueba1)
+;(inversa? matriz_prueba4)
+
+;Test inversa
+;(test_matriz (inversa_matriz matriz_prueba1))
+;(test_matriz (inversa_matriz matriz_prueba4))
+
+;Test rango
+;(testenteros (rango matriz_prueba1))
+
+
+
+ 
+ 
+
+
+
+
+
+
+
