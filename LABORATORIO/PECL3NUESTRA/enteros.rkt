@@ -775,23 +775,30 @@
 ;Si es impar, se le resta 1 al exponente
 ;En el momento que el exponente es igual a 1 devuelve la matriz
 ;Se usan numeros naturales porque la funcion par? solo se usa para numeros naturales
-(define potencia_matrices 
-  (lambda (m)
-        (lambda (e)
-            (((Y (lambda (f)
-                   (lambda (matriz)
-                     (lambda(expo)
-                      ((((esigualnat expo)un)  
-                      (lambda (no_use)
-                            matriz) 
-                       (lambda (no_use)
-                            (((par? expo)
-                              (lambda (no_use2)
-                                   ((f ((prod_matrices matriz)matriz)) ((cocientenat expo)deux))
-                                )
-                              (lambda (no_use2)
-                                   ((prod_matrices matriz) ((f matriz) ((restanat expo)un)))
-                                ))zero)))zero)))))m)e))))
+(define potencia_matrices
+    (lambda (matriz)
+        (lambda (exp)
+            ((Y (lambda (f)
+                (lambda (y)
+                    ((((esigualnat y)un) 
+                        (lambda (no_use)
+                            matriz
+                        )
+                        (lambda (no_use)
+                          (((par? y)
+                           (lambda (no_use1)
+                             (cuadrado_matrices (f ((cocientenat y) deux))))
+                           (lambda (no_use1)
+                             ((prod_matrices matriz) (f (predecesor y))))) zero)
+                        )
+                    )
+                        zero)    
+                )
+            ))
+                exp)  
+        )
+    )
+)
 
 
 
