@@ -342,8 +342,6 @@
 
 (define veinte ((par vingt) zero))
 
-;;;;;;;;;;;;
-(define dostercios ((cocientenat deux) trois))
 
 ;;;;; Orden, valor absoluto y tests de nulidad, positividad y negatividad. 
 ;;;
